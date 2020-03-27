@@ -12,7 +12,12 @@
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Sen:700&display=swap" rel="stylesheet">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
+    <!--DO NOT FORGET THIS SCRIPT TAG SO YOU CAN USE JQUERY!!!!!-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!--YOUR OWN JAVASCRIPT CAN GO RIGHT HERE-->
     <!-- Custom styles for this template -->
     <style type="text/css">
         header.welcome {
@@ -23,7 +28,6 @@
             background-position: center center;
             background-size: cover;
             margin-top: 50px;
-            
         }
 
         header.welcome .intro-text {
@@ -39,7 +43,6 @@
             color: #000000;
             font-family: 'Sen', sans-serif;
             text-shadow: 1px 1px #c4b5b5;
-            
         }
 
         header.welcome .intro-text .intro-heading {
@@ -87,39 +90,42 @@
             letter-spacing: 2px;
         }
 
-        /* navigation links*/
-        #link a {
-            color: #ffffff;
-            margin: 3px 10px 0 10px;
-            letter-spacing: 1.5px;
-        }
 
-        #link a:hover {
-            color: #c3f5dd;
-        }
+
 
         /* navigation link with right border */
         #first-link {
-            padding-right: 6px;
+
             border-right: solid 1px #ccc;
         }
 
         /* sign up link button and toggle button */
-        #button-link,
-        #toogle-button {
-            color: #f2f2f2;
+        #button-link{
             border-style: solid;
             border-width: 1px;
             border-color: rgba(0, 0, 0, .2);
             border-radius: 5px;
             background-color: #fa6a48;
             line-height: 17px;
-
         }
 
-        #button-link a {
-            color: #ffffff;
+        .navright{
+            color:white;
         }
+
+        #link li{
+            margin-right:10px;
+        }
+
+        .nav-link:hover {
+            color: orange;
+        }
+
+        #signup:hover{
+            color:#524b4b
+        }
+
+
     </style>
 </head>
 
@@ -131,12 +137,14 @@
     <nav id="mynavbar" class="navbar navbar-expand-md fixed-top shadow-lg ">
         <button type="button" id="toogle-button" class="navbar-toggler" data-toggle="collapse" data-target="#myNavbar">
             <span class="glyphicon glyphicon-menu-hamburger"></span>
-        </button> <a id="logo" class="navbar-brand" href="./index.html">MentorMe</a>
+        </button> 
+        <a id="logo" class="navbar-brand" href="./index.html">MentorMe</a>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul id="link" class="nav navbar-nav ml-auto">
-                <li class="nav-item"><a href="#" class="nav-link">About Us</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Sign In</a></li>
-                <li id="button-link" class="nav-item"><a href="#" class="nav-link">Sign Up</a>
+                <li class="nav-item" id="about"><button href="#" class="nav-link btn btn-lg navright">About Us</button></li>
+                <li class="nav-item" id="signin"><button href="#" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="#ModalExample">Sign In</button></li>
+                <li id="button-link" class="nav-item">
+                    <button href="#" id="signup" class="nav-link btn  btn-lg navright">Sign Up</button>
                 </li>
             </ul>
         </div>
@@ -152,11 +160,61 @@
                     </a>
                 </div>
                 <div class="intro-lead-in">Welcome To MentorMe!</div>
-                <div class="intro-heading text-uppercase">We offer the best
-                    mentorship experiences for you</div>
+                <div class="intro-heading text-uppercase">
+                    We offer the best
+                    mentorship experiences for you
+                </div>
             </div>
         </div>
     </header>
+
+    <!--Login pupup form-->
+    <div id="ModalExample" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center">Log in</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" method="POST" action="">
+                        <input type="hidden" name="_token" value="">
+                        <div class="form-group">
+                            <label class="control-label">E-Mail Address</label>
+                            <div>
+                                <input type="email" class="form-control input-lg" name="email" value="" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Password</label>
+                            <div>
+                                <input type="password" class="form-control input-lg" name="password" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember"> Remember Me
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <button type="submit" class="btn btn-info btn-block">Login</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer text-center">
+                    Don't have an account? <a href="#">Sign up »</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
     <footer class="fixed-bottom">
         <div class="footer-copyright text-center py-3 text-white-50">&copy; 2020 Copyright: MentorMe</div>
     </footer>
