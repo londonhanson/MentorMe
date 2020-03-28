@@ -30,29 +30,29 @@
             margin-top: 50px;
         }
 
-        header.welcome .intro-text {
-            padding-top: 150px;
-            padding-bottom: 200px;
-            text-shadow: 3px 3px #5e5353;
-        }
+            header.welcome .intro-text {
+                padding-top: 150px;
+                padding-bottom: 200px;
+                text-shadow: 3px 3px #5e5353;
+            }
 
-        header.welcome .intro-text .intro-lead-in {
-            font-size: 40px;
-            line-height: 40px;
-            margin-bottom: 25px;
-            color: #000000;
-            font-family: 'Sen', sans-serif;
-            text-shadow: 1px 1px #c4b5b5;
-        }
+                header.welcome .intro-text .intro-lead-in {
+                    font-size: 40px;
+                    line-height: 40px;
+                    margin-bottom: 25px;
+                    color: #000000;
+                    font-family: 'Sen', sans-serif;
+                    text-shadow: 1px 1px #c4b5b5;
+                }
 
-        header.welcome .intro-text .intro-heading {
-            font-size: 65px;
-            font-weight: 700;
-            line-height: 75px;
-            margin-bottom: 50px;
-            font-family: 'Bree Serif', serif;
-            letter-spacing: 3px;
-        }
+                header.welcome .intro-text .intro-heading {
+                    font-size: 65px;
+                    font-weight: 700;
+                    line-height: 75px;
+                    margin-bottom: 50px;
+                    font-family: 'Bree Serif', serif;
+                    letter-spacing: 3px;
+                }
 
 
         video {
@@ -95,12 +95,11 @@
 
         /* navigation link with right border */
         #first-link {
-
             border-right: solid 1px #ccc;
         }
 
         /* sign up link button and toggle button */
-        #button-link{
+        #button-link {
             border-style: solid;
             border-width: 1px;
             border-color: rgba(0, 0, 0, .2);
@@ -109,23 +108,21 @@
             line-height: 17px;
         }
 
-        .navright{
-            color:white;
+        .navright {
+            color: white;
         }
 
-        #link li{
-            margin-right:10px;
+        #link li {
+            margin-right: 10px;
         }
 
         .nav-link:hover {
             color: orange;
         }
 
-        #signup:hover{
-            color:#524b4b
+        #signup:hover {
+            color: #524b4b
         }
-
-
     </style>
 </head>
 
@@ -137,14 +134,14 @@
     <nav id="mynavbar" class="navbar navbar-expand-md fixed-top shadow-lg ">
         <button type="button" id="toogle-button" class="navbar-toggler" data-toggle="collapse" data-target="#myNavbar">
             <span class="glyphicon glyphicon-menu-hamburger"></span>
-        </button> 
+        </button>
         <a id="logo" class="navbar-brand" href="./index.html">MentorMe</a>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul id="link" class="nav navbar-nav ml-auto">
-                <li class="nav-item" id="about"><button href="#" class="nav-link btn btn-lg navright">About Us</button></li>
+                <li class="nav-item" id="about"><button href="#" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="#AboutUsForm">About Us</button></li>
                 <li class="nav-item" id="signin"><button href="#" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="#ModalExample">Sign In</button></li>
                 <li id="button-link" class="nav-item">
-                    <button href="#" id="signup" class="nav-link btn  btn-lg navright">Sign Up</button>
+                    <button href="#" id="signup" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="#Signupform">Sign Up</button>
                 </li>
             </ul>
         </div>
@@ -207,11 +204,79 @@
                     </form>
                 </div>
                 <div class="modal-footer text-center">
-                    Don't have an account? <a href="#">Sign up »</a>
+                    Don't have an account? <a href="./index.html" data-dismiss="modal" data-toggle="modal" data-target="#Signupform">Sign up »</a>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <!--Signup pupup form-->
+    <div id="Signupform" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="h4 modal-title text-center">Sign Up</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" method="POST" action="">
+                        <input type="hidden" name="_token" value="">
+                        <div class="form-group">
+                            <label class="control-label">First Name</label>
+                            <div>
+                                <input type="text" class="form-control input-lg" name="first" value="" required="" autofocus="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Last Name</label>
+                            <div>
+                                <input type="text" class="form-control input-lg" name="last" value="" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">E-Mail Address</label>
+                            <div>
+                                <input type="email" class="form-control input-lg" name="email" value="" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Password</label>
+                            <div>
+                                <input type="password" id="password" class="form-control input-lg" name="password" required minlength="8">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Confirm Password</label>
+                            <div>
+                                <input type="password" class="form-control input-lg" name="repassword" required minlength="8" oninput='repassword.setCustomValidity(repassword.value != password.value ? "Passwords do not match." : "")'>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div>
+                                <button type="submit" class="btn btn-info btn-block">Sign Up</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer text-center">
+                    Already have an account? <a href="" data-dismiss="modal" data-toggle="modal" data-target="#ModalExample">Sign In »</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--About us-->
+    <div id="AboutUsForm" class="modal fade ">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+
 
 
 
