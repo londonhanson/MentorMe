@@ -95,6 +95,8 @@
     <Content Include="uploadbutton.aspx" />
     <Content Include="video\VideoFinal.mp4" />
     <Content Include="Web.config" />
+    <Content Include="AccountServices.js" />
+    <Content Include="home.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
