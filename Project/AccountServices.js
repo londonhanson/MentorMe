@@ -63,7 +63,7 @@ function SignUp(email, password, firstName, lastName) {
     var webMethod = "AccountServices.asmx/SignUp";
     var parameters = "{\"email\":\"" + encodeURI(email) + "\", \"password\":\"" + encodeURI(password) + "\",\"firstName\":\"" + encodeURI(firstName) + "\",\"lastName\":\"" + encodeURI(lastName) + "\"}";
 
-
+    $.ajax({
     type: "POST",
     url: webMethod,
     data: parameters,
@@ -77,5 +77,6 @@ function SignUp(email, password, firstName, lastName) {
          },
     error: function (e) {
     alert("Failed to create an account. Try again.");
-    }
+        }
+    });
 }

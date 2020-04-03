@@ -38,11 +38,11 @@ namespace accountmanager
             //we return this flag to tell them if they logged in or not
             string account = "";
             //our connection string comes from our web.config file like we talked about earlier
-            string sqlConnectString = getConString();
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
             //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
             //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
 
-            string sqlSelect = "SELECT id, email, pass, firstName, lastName, bio, department, isAdmin FROM accounts WHERE email=@emailValue and pass=@passValue";
+            string sqlSelect = "SELECT accountId, email, password, firstName, lastName, bio, department, isAdmin FROM accounts WHERE email=@emailValue and password=@passValue";
 
 
             //set up our connection object to be ready to use our connection string
@@ -70,7 +70,7 @@ namespace accountmanager
                 //if we found an account, store the id and admin status in the session
                 //so we can check those values later on other method calls to see if they 
                 //are 1) logged in at all, and 2) and admin or not
-                Session["id"] = sqlDt.Rows[0]["id"];
+                Session["id"] = sqlDt.Rows[0]["accountId"];
                 Session["email"] = sqlDt.Rows[0]["email"];
                 Session["firstName"] = sqlDt.Rows[0]["firstName"];
                 Session["lastName"] = sqlDt.Rows[0]["lastName"];
