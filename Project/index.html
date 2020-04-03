@@ -19,7 +19,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!--YOUR OWN JAVASCRIPT CAN GO RIGHT HERE-->
 
-    <script type="text/javascript">function SignUp(email, password, firstName, lastName) {
+    <script type="text/javascript">
+            function SignUp(email, password, firstName, lastName) {
             var webMethod = "AccountServices.asmx/SignUp";
             var parameters = "{\"email\":\"" + encodeURI(email) + "\", \"password\":\"" + encodeURI(password) + "\",\"firstName\":\"" + encodeURI(firstName) + "\",\"lastName\":\"" + encodeURI(lastName) + "\"}";
 
@@ -252,7 +253,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form role="form" method="POST" action="" onsubmit="SignUp($('#fName').val(), $('#lName').val(), $('#email').val(), $('#password').val()); return false;">
+                    <form role="form" method="POST" action="" onsubmit="SignUp($('#email').val(), $('#password').val(), $('#fName').val(), $('#lName').val()); return false;">
                         <input type="hidden" name="_token" value="">
                         <div class="form-group">
                             <label class="control-label">First Name</label>
