@@ -97,6 +97,7 @@
     <Content Include="Web.config" />
     <Content Include="AccountServices.js" />
     <Content Include="home.html" />
+    <Content Include="SiteStyle.css" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
