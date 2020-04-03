@@ -1,8 +1,5 @@
 ﻿//place any global variables here! below
 
-debugger;
-
-
 function LogIn(email, pass) {
     //the url of the webservice we will be talking to
     var webMethod = "AccountServices.asmx/LogIn";
