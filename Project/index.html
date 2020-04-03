@@ -19,30 +19,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!--YOUR OWN JAVASCRIPT CAN GO RIGHT HERE-->
 
-    <script type="text/javascript">
-            function SignUp(email, password, firstName, lastName) {
-            var webMethod = "AccountServices.asmx/SignUp";
-            var parameters = "{\"email\":\"" + encodeURI(email) + "\", \"password\":\"" + encodeURI(password) + "\",\"firstName\":\"" + encodeURI(firstName) + "\",\"lastName\":\"" + encodeURI(lastName) + "\"}";
-
-            $.ajax({
-                type: "POST",
-                url: webMethod,
-                data: parameters,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    alert("Account created, you can now login.");
-
-                    location.href = "index.html"
-                },
-                error: function (e) {
-                    alert("Failed to create an account. Try again.");
-                }
-            });
-
-        }
-    </script>
-
     <!-- Custom styles for this template -->
     <style type="text/css">
         header.welcome {
@@ -253,7 +229,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form role="form" method="POST" action="" onsubmit="SignUp($('#email').val(), $('#password').val(), $('#fName').val(), $('#lName').val()); return false;">
+                    <form role="form" onsubmit="SignUp($('#email').val(), $('#password').val(), $('#fName').val(), $('#lName').val()); return false;">
                         <input type="hidden" name="_token" value="">
                         <div class="form-group">
                             <label class="control-label">First Name</label>

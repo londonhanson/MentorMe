@@ -60,3 +60,25 @@ function LogIn(email, pass) {
     });
     return true;
 }
+
+
+function SignUp(email, password, firstName, lastName) {
+    var webMethod = "AccountServices.asmx/SignUp";
+    var parameters = "{\"email\":\"" + encodeURI(email) + "\", \"password\":\"" + encodeURI(password) + "\",\"firstName\":\"" + encodeURI(firstName) + "\",\"lastName\":\"" + encodeURI(lastName) + "\"}";
+
+
+    type: "POST",
+    url: webMethod,
+    data: parameters,
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+
+   success: function (msg) {
+        alert("Account created, you can now login.");
+
+        location.href = "index.html"
+         },
+    error: function (e) {
+    alert("Failed to create an account. Try again.");
+    }
+}
