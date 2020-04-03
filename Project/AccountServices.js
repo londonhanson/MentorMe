@@ -80,3 +80,20 @@ function SignUp(email, password, firstName, lastName) {
         }
     });
 }
+
+function MentorNav() {
+    if (Session["isAdmin"].ToString() === "1") {
+        defaultNav = document.getElementById('myNavBar')
+        defaultNav.style.visibility = 'hidden';
+
+        altNav = document.getElementById('mentorNavBar')
+        altNav.style.visibility = 'visible';
+    }
+    else {
+        defaultNav = document.getElementById('myNavBar')
+        defaultNav.style.visibility = 'visible';
+
+        altNav = document.getElementById('mentorNavBar')
+        altNav.style.visibility = 'hidden';
+    }
+}

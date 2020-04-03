@@ -1,10 +1,117 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <title></title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>MentorMe</title>
+    <link rel="icon" href="./img/icon.png" type="image/png" sizes="16x16">
+    <!--Font style-->
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Sen:700&display=swap" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!--DO NOT FORGET THIS SCRIPT TAG SO YOU CAN USE JQUERY!!!!!-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!--YOUR OWN JAVASCRIPT CAN GO RIGHT HERE-->
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="./SiteStyle.css" />
 </head>
-<body>
-    You are logged in.
+
+<body onload="MentorNav();">
+    <!-- Nav bar -->
+    <nav id="mynavbar" class="navbar navbar-expand-md fixed-top shadow-lg ">
+        <button type="button" id="toogle-button" class="navbar-toggler" data-toggle="collapse" data-target="#myNavbar">
+            <span class="glyphicon glyphicon-menu-hamburger"></span>
+        </button>
+        <a id="logo2" class="navbar-brand" href="./index.html">MentorMe</a>
+        <div class="collapse navbar-collapse" id="myNavBar">
+            <ul id="link" class="nav navbar-nav ml-auto">
+                <li class="nav-item" id="about"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="#AboutUsForm">About Us</button></li>
+                <li class="nav-item" id="login"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="">Find Mentor</button></li>
+                <li id="button-link" class="nav-item">
+                    <button href="#" id="signup" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="">Find Classes</button>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="mentorNavBar">
+            <ul id="link" class="nav navbar-nav ml-auto">
+                <li class="nav-item" id="about"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="#AboutUsForm">About Us</button></li>
+                <li class="nav-item" id="login"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="">View Mentees</button></li>
+                <li id="button-link" class="nav-item">
+                    <button href="#" id="signup" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="">View Classes</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <header class="welcome">
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">
+                    <a class="navbar-brand ">
+                        <img src="./img/icon.png" width="150" height="150" alt="">
+                    </a>
+                </div>
+                <div class="intro-lead-in">Welcome To MentorMe!</div>
+                <div class="intro-heading text-uppercase">
+                    We offer the best
+                    mentorship experiences for you
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--About us-->
+    <div id="AboutUsForm" class="modal fade ">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="h4 modal-title text-center">About Us</h2>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div id="aboutbody">
+                    <p>
+                        MentorMe is an educational enterprise program designed to connect employees within an organization.
+                        Mentorship programs often run into problems, such as:
+
+                        <ul>
+                            <li>
+                                Pairing mentors with mentees
+                            </li>
+                            <li>
+                                Identifying mentors that want to teach
+                            </li>
+                            <li>
+                                Providing engaging content to teach mentees
+                            </li>
+                        </ul>
+
+                        Through our dynamic application, mentors are able to create classes of their own expertise by uploading
+                        resources conveniently and accessibly. Mentees can then choose lessons based on the skills they need to learn.
+                        <br />
+                        <br />
+                        <div id="aboutbottom">Prepare your employees in an engaging way with MentorMe today!</div>
+                    </p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+
+    <script src="AccountServices.js" type="text/javascript"></script>
+
+
+    <footer class="fixed-bottom">
+        <div class="footer-copyright text-center py-3 text-white-50">&copy; 2020 Copyright: MentorMe</div>
+    </footer>
 </body>
+
 </html>

@@ -70,6 +70,16 @@ video {
     letter-spacing: 2px;
 }
 
+/* black logo or main heading */
+#logo2 {
+    font-size: 30px;
+    font-weight: bolder;
+    color: darkgrey;
+    margin-left: 30px;
+    letter-spacing: 2px;
+}
+
+
 
 
 
@@ -92,6 +102,10 @@ video {
     color: white;
 }
 
+.navright2 {
+    color: darkorange;
+}
+
 #link li {
     margin-right: 10px;
 }
@@ -100,11 +114,27 @@ video {
     color: orange;
 }
 
+.nav-link2:hover {
+    color: #545454;
+}
+
 #signup:hover {
     color: #524b4b
 }
 
-#about-body {
+#aboutbody {
     padding: 10px;
     font-family: 'Sen', sans-serif;
+    font-size: 14pt;
+}
+
+#aboutdiv {
+    background-color: white;
+}
+
+#aboutbottom {
+    font-size: 17pt;
+    text-align: center;
+    background-color: rgba(72, 146, 199, 0.75);
+    padding: 10px;
 }
