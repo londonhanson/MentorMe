@@ -98,7 +98,6 @@
     <Content Include="AccountServices.js" />
     <Content Include="home.html" />
     <Content Include="SiteStyle.css" />
-    <Content Include="img\m_cropped.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
