@@ -7,32 +7,34 @@ header.welcome {
     background-attachment: scroll;
     background-position: center center;
     background-size: cover;
-    margin-top: 50px;
+    opacity: 0.9;
+    margin-top: 200px;
 }
 
     header.welcome .intro-text {
-        padding-top: 150px;
+        color: orangered;
+        padding-top: 25px;
         padding-bottom: 200px;
-        text-shadow: 3px 3px #5e5353;
     }
 
         header.welcome .intro-text .intro-lead-in {
             font-size: 40px;
             line-height: 40px;
             margin-bottom: 25px;
-            color: #000000;
+            color: orangered;
             font-family: 'Sen', sans-serif;
-            text-shadow: 1px 1px #c4b5b5;
         }
 
-        header.welcome .intro-text .intro-heading {
-            font-size: 65px;
-            font-weight: 700;
-            line-height: 75px;
-            margin-bottom: 50px;
-            font-family: 'Bree Serif', serif;
-            letter-spacing: 3px;
-        }
+.intro-heading {
+    padding-top: 25px;
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 60px;
+    margin-bottom: 0;
+    font-family: 'Bree Serif', serif;
+    letter-spacing: 3px;
+    color: orangered;
+}
 
 
 video {
@@ -54,18 +56,29 @@ video {
 /**Navbar**/
 #mynavbar {
     border-radius: 0px;
-    background: transparent;
+    background-color: transparent;
     padding: 10px;
     font-size: 17px;
     font-family: 'Sen', sans-serif;
     font: bold;
 }
 
+#mainLogo {
+    width: 55px;
+}
+
+.container {
+    background-color: lightgrey;
+    box-shadow: 3px 3px #c4b5b5;
+    border-radius: 15px;
+}
+
+
 /* logo or main heading */
 #logo {
     font-size: 30px;
     font-weight: bolder;
-    color: #ffffff;
+    color: orangered;
     margin-left: 30px;
     letter-spacing: 2px;
 }

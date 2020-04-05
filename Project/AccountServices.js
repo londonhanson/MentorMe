@@ -81,6 +81,31 @@ function SignUp(email, password, firstName, lastName) {
     });
 }
 
+//logs the user off both at the client and at the server
+function LogOff() {
+    var webMethod = "AccountServices.asmx/LogOff";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            if (msg.d) {
+                //we logged off, so go back to logon page,
+                //stop checking messages
+                //and clear the chat panel
+                alert("You have been signed out.");
+                location.replace("./index.html");
+            }
+            else {
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
 function MentorNav() {
     if (Session["isAdmin"].ToString() === "1") {
         defaultNav = document.getElementById('myNavBar')
