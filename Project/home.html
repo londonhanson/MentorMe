@@ -19,8 +19,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!--YOUR OWN JAVASCRIPT CAN GO RIGHT HERE-->
 
+    <script src="AccountServices.js" type="text/javascript"></script>
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="./SiteStyle.css" />
+
 </head>
 
 <body onload="MentorNav()">
@@ -30,23 +32,10 @@
             <span class="glyphicon glyphicon-menu-hamburger"></span>
         </button>
         <a id="logo" class="navbar-brand" href="./index.html">MentorMe</a>
+        <p id="mode"></p>
 
-        <div class="collapse navbar-collapse" id="myNavBar">
-            <ul id="link" class="nav navbar-nav ml-auto">
-                <li class="nav-item" id="about"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="#AboutUsForm">About Us</button></li>
-                <li class="nav-item" id="login"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="">Find Mentor</button></li>
-                <li id="button-link" class="nav-item">
-                    <button href="#" id="signup" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="">Find Classes</button>
-                </li>
-                <li id="button-link" class="nav-item">
-                    <button href="#" id="signup" class="nav-link btn btn-lg navright" onclick="LogOut()" data-toggle="modal" data-target="">Log Out</button>
-                </li>
-            </ul>
-        </div>
         <div class="collapse navbar-collapse" id="mentorNavBar">
             <ul id="link" class="nav navbar-nav ml-auto">
-                <li class="nav-item" id="about"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="#AboutUsForm">About Us</button></li>
-                <li class="nav-item" id="login"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="">View Mentees</button></li>
                 <li class="nav-item">
                     <a href="ViewUserAccounts.html" id="btnViewUsers" class="nav-link2 btn btn-lg navright2">View All Users</a>
                 </li>
@@ -58,63 +47,104 @@
     </nav>
 
     <!-- Page Content -->
-    <header class="welcome">
-        <div class="container">
-            <div class="intro-text">
-                <div class="intro-lead-in">
-                    <a class="navbar-brand ">
-                        <img src="./img/icon.png" width="150" height="150" alt="">
-                    </a>
-                </div>
-                <div class="intro-lead-in">Welcome To MentorMe!</div>
-                <div class="intro-heading text-uppercase">
-                    We offer the best
-                    mentorship experiences for you
-                </div>
+    <div class="container col-lg-10" >
+        <div class="row">
+            <div class="col-lg-3">
+                <aside class="user-info-wrapper">
+                    <div class="user-cover" style="background-image: url(./img/bg.jpg);"></div>
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <a class="edit-avatar" href="#">&#128472</a>
+                            <img src="./img/Example.png" alt="User">
+                        </div>
+                        <div class="user-data">
+                            <h4>User's Name</h4><span>User's bio or position</span>
+                        </div>
+                    </div>
+                </aside>
+                <nav class="list-group" id="menteeform">
+                    <a class="list-group-item with-badge active" href="#"><i class=" fa fa-th"></i>My Profile</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>My Classes</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>Find A Class</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>Find A Mentor</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-map"></i>Messages</a>
+                </nav>
+                <nav class="list-group" id="mentorform">
+                    <a class="list-group-item with-badge active" href="#"><i class=" fa fa-th"></i>My Profile</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>My Classes</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-map"></i>Messages</a>
+                </nav>
+                <nav class="list-group" id="adminform">
+                    <a class="list-group-item with-badge active" href="#"><i class=" fa fa-th"></i>View All Users</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>View All Classes</a>
+                </nav>
             </div>
+
+            <!--Example right form-->
+            <div class="col-lg-9" id="Example">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>User Profile</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <label for="inputFirst" class="sr-only">First Name</label>
+                                        <input type="text" id="inputFirst" class="form-control" placeholder="First Name" required="">
+                                    </div>
+                                    <div class="row">
+                                        <label for="inputLast" class="sr-only">Last Name</label>
+                                        <input type="text" id="inputLast" class="form-control" placeholder="Last Name" required="">
+                                    </div>
+                                    <div class="row">
+                                        <label for="inputEmail" class="sr-only">e-Mail</label>
+                                        <input type="email" id="inputEmail" class="form-control" placeholder="E-Mail" required="">
+                                    </div>
+                                    <div class="row">
+                                        <label for="Bio" class="sr-only py-5">Bio</label>
+                                        <textarea name="Bio" id="Bio" cols="40" rows="5" class="form-control " placeholder="Bio" required=""></textarea>
+                                    </div>
+                                </td>
+                        </tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+
+            <div class="col-lg-8" id="videalluserform">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Account ID</th>
+                                <th scope="col">E-Mail</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Area of Focus</th>
+                                <th scope="col" style="width:120px">Edit User</th>
+                                <th scope="col" style="width:120px">Delete User</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accountsBox"></tbody>
+                      </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+
         </div>
-    </header>
+    </div>
 
-    <!--About us-->
-    <div id="AboutUsForm" class="modal fade ">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="h4 modal-title text-center">About Us</h2>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div id="aboutbody">
-                    <p>
-                        MentorMe is an educational enterprise program designed to connect employees within an organization.
-                        Mentorship programs often run into problems, such as:
-
-                        <ul>
-                            <li>
-                                Pairing mentors with mentees
-                            </li>
-                            <li>
-                                Identifying mentors that want to teach
-                            </li>
-                            <li>
-                                Providing engaging content to teach mentees
-                            </li>
-                        </ul>
-
-                        Through our dynamic application, mentors are able to create classes of their own expertise by uploading
-                        resources conveniently and accessibly. Mentees can then choose lessons based on the skills they need to learn.
-                        <br />
-                        <br />
-                        <div id="aboutbottom">Prepare your employees in an engaging way with MentorMe today!</div>
-                    </p>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    
 
 
 
 
-    <script src="AccountServices.js" type="text/javascript"></script>
 
 
     <footer class="fixed-bottom">

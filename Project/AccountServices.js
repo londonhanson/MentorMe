@@ -115,19 +115,31 @@ function LogOut() {
 }
 
 function MentorNav() {
+    var mode = document.getElementById("mode")
+    var viewuserbtn = document.getElementById('btnViewUsers')
+    var mentorform = document.getElementById('mentorform')
+    var menteeform = document.getElementById('menteeform')
+    var adminform = document.getElementById('adminform')
+    var videalluserform = document.getElementById('videalluserform')
+    var profileform = document.getElementById('Example')
+    console.log(accountData)
     if (accountData["isAdmin"] === "True") {
-        defaultNav = document.getElementById('myNavBar')
-        defaultNav.style.display = 'none';
-
-        altNav = document.getElementById('mentorNavBar')
-        altNav.style.display = "block";
+        LoadAccounts();
+        mode.innerHTML = "Admin Mode"
+        viewuserbtn.style.display = 'block';
+        adminform.style.display = 'block';
+        menteeform.style.display = 'none';
+        mentorform.style.display = 'none';
+        videalluserform.style.display = 'block';
+        profileform.style.display = 'none';
     }
     else {
-        defaultNav = document.getElementById('myNavBar')
-        defaultNav.style.display = "block";
-
-        altNav = document.getElementById('mentorNavBar')
-        altNav.style.display = "none";
+        viewuserbtn.style.display = 'none';
+        menteeform.style.display = 'block';
+        mentorform.style.display = 'none';
+        adminform.style.display = 'none';
+        videalluserform.style.display = 'none';
+        profileform.style.display = 'block';
     }
 }
 
@@ -164,12 +176,12 @@ function LoadAccounts() {
                 accountsArray.sort(compare);
                 for (var i = 0; i < accountsArray.length; i++) {
                     var acct;
-                    acct = "<tr><th scope = \"row\">" + accountsArray[i].accountID + "</th ><td>" + accountsArray[i].userName +
-                        "</td><td>" + accountsArray[i].firstName + "</td><td>" + accountsArray[i].lastName + "</td><td style=\"width: 10 %\">" +
-                        "<button type=\"button\" class=\"btn btn-primary\">" + "<a href=\"mailto:" + accountsArray[i].email +
-                        "\" style=\"color: aliceblue\">" + "Send Email" + "</button>" + "</td><td style=\"width: 6 %\">" +
+                    acct = "<tr><th scope = \"row\">" + accountsArray[i].id + "</th ><td>" + accountsArray[i].email +
+                        "</td><td>" + accountsArray[i].firstName + "</td><td>" + accountsArray[i].lastName + "</td><td>" +
+                        accountsArray[i].department +
+                        "</td><td style=\"width: 6 %\">" +
                         "<button type=\"button\" class=\"btn btn-info\">" + "Edit" + "</button>" + "</td><td>" +
-                        "<button type=\"button\" class=\"btn btn-warning\" onclick='DeleteAccount(" + accountsArray[i].accountID + ")'>" + "Delete" + "</button>" + "</td></tr>"
+                        "<button type=\"button\" class=\"btn btn-warning\" onclick='DeleteAccount(" + accountsArray[i].id + ")'>" + "Delete" + "</button>" + "</td></tr>"
 
                     $("#accountsBox").append(acct);
                 }
