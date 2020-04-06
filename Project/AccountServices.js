@@ -66,9 +66,13 @@ function LogIn(email, pass) {
 }
 
 
-function SignUp(email, password, firstName, lastName) {
+function SignUp(email, password, firstName, lastName, accountType) {
     var webMethod = "AccountServices.asmx/SignUp";
-    var parameters = "{\"email\":\"" + encodeURI(email) + "\", \"password\":\"" + encodeURI(password) + "\",\"firstName\":\"" + encodeURI(firstName) + "\",\"lastName\":\"" + encodeURI(lastName) + "\"}";
+    var parameters = "{\"email\":\"" + encodeURI(email) +
+        "\", \"password\":\"" + encodeURI(password) +
+        "\",\"firstName\":\"" + encodeURI(firstName) +
+        "\",\"lastName\":\"" + encodeURI(lastName) +
+        "\",\"accountType\":\"" + encodeURI(accountType) + "\"}";
 
     $.ajax({
     type: "POST",

@@ -124,7 +124,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form role="form" onsubmit="SignUp($('#email').val(), $('#password').val(), $('#fName').val(), $('#lName').val()); return false;">
+                    <form role="form" onsubmit="SignUp($('#email').val(), $('#password').val(), $('#fName').val(), $('#lName').val(), $('#selectType').val()); return false;">
                         <input type="hidden" name="_token" value="">
                         <div class="form-group">
                             <label class="control-label">First Name</label>
@@ -156,6 +156,16 @@
                             <label class="control-label">Confirm Password</label>
                             <div>
                                 <input type="password" class="form-control input-lg" name="repassword" required minlength="8" oninput='repassword.setCustomValidity(repassword.value != password.value ? "Passwords do not match." : "")'>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div>
+                                <label class="control-label">I am a...</label>
+                                <select id="selectType">
+                                    <option value="Mentee">Mentee</option>
+                                    <option value="Mentor">Mentor</option>
+                                </select>
                             </div>
                         </div>
 

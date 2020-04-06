@@ -94,13 +94,13 @@ namespace accountmanager
         }
 
         [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
-        public void SignUp(string email, string password, string firstName, string lastName)
+        public void SignUp(string email, string password, string firstName, string lastName, string accountType)
         {
             //our connection string comes from our web.config file like we talked about earlier
             string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
             //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
             //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
-            string sqlAddAcct = "INSERT INTO accounts(email, password, firstName, lastName) VALUES(@emailValue, @passValue, @firstNameValue, @lastNameValue)";
+            string sqlAddAcct = "INSERT INTO accounts(email, password, firstName, lastName, accountType) VALUES(@emailValue, @passValue, @firstNameValue, @lastNameValue, @accountTypeValue)";
             //"SELECT userName, password FROM accounts WHERE userName=@idValue and password=@passValue";
             MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
             MySqlCommand sqlCommand = new MySqlCommand(sqlAddAcct, sqlConnection);
@@ -112,6 +112,7 @@ namespace accountmanager
             sqlCommand.Parameters.AddWithValue("@passValue", HttpUtility.UrlDecode(password));
             sqlCommand.Parameters.AddWithValue("@firstNameValue", HttpUtility.UrlDecode(firstName));
             sqlCommand.Parameters.AddWithValue("@lastNameValue", HttpUtility.UrlDecode(lastName));
+            sqlCommand.Parameters.AddWithValue("@accountTypeValue", HttpUtility.UrlDecode(accountType));
 
             sqlConnection.Open();
 
