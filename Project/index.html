@@ -86,12 +86,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember"> Remember Me
-                                    </label>
-                                </div>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                <label class="custom-control-label" for="customSwitch1">Remember Me</label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -144,14 +141,12 @@
                                 <input id="email" type="email" class="form-control input-lg" name="email" value="" required>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="control-label">Password</label>
                             <div>
                                 <input type="password" id="password" class="form-control input-lg" name="password" required minlength="8">
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="control-label">Confirm Password</label>
                             <div>
@@ -160,21 +155,21 @@
                         </div>
 
                         <div class="form-group">
-                            <div>
-                                <label class="control-label">I am a...</label>
-                                <select id="selectType">
-                                    <option value="Mentee">Mentee</option>
-                                    <option value="Mentor">Mentor</option>
-                                </select>
-                            </div>
+                            <label class="control-label">Position</label>
+                            <select class="custom-select form-control">
+                                <option selected>Select Your Position</option>
+                                <option value="Mentee">Mentee</option>
+                                <option value="Mentor">Mentor</option>
+                            </select>
                         </div>
+
+
 
                         <div class="form-group">
                             <div>
                                 <button type="submit" class="btn btn-info btn-block">Sign Up</button>
                             </div>
                         </div>
-
                         <div class="form-group text-center">
                             <div>
                                 <hr />
