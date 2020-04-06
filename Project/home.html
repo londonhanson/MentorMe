@@ -18,17 +18,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!--YOUR OWN JAVASCRIPT CAN GO RIGHT HERE-->
+
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="./SiteStyle.css" />
 </head>
 
-<body onload="MentorNav();">
+<body onload="MentorNav()">
     <!-- Nav bar -->
     <nav id="mynavbar" class="navbar navbar-expand-md fixed-top shadow-lg ">
         <button type="button" id="toogle-button" class="navbar-toggler" data-toggle="collapse" data-target="#myNavbar">
             <span class="glyphicon glyphicon-menu-hamburger"></span>
         </button>
-        <a id="logo2" class="navbar-brand" href="./index.html">MentorMe</a>
+        <a id="logo" class="navbar-brand" href="./index.html">MentorMe</a>
+
         <div class="collapse navbar-collapse" id="myNavBar">
             <ul id="link" class="nav navbar-nav ml-auto">
                 <li class="nav-item" id="about"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="#AboutUsForm">About Us</button></li>
@@ -36,14 +38,20 @@
                 <li id="button-link" class="nav-item">
                     <button href="#" id="signup" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="">Find Classes</button>
                 </li>
+                <li id="button-link" class="nav-item">
+                    <button href="#" id="signup" class="nav-link btn btn-lg navright" onclick="LogOut()" data-toggle="modal" data-target="">Log Out</button>
+                </li>
             </ul>
         </div>
         <div class="collapse navbar-collapse" id="mentorNavBar">
             <ul id="link" class="nav navbar-nav ml-auto">
                 <li class="nav-item" id="about"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="#AboutUsForm">About Us</button></li>
                 <li class="nav-item" id="login"><button href="#" class="nav-link2 btn btn-lg navright2" data-toggle="modal" data-target="">View Mentees</button></li>
+                <li class="nav-item">
+                    <a href="ViewUserAccounts.html" id="btnViewUsers" class="nav-link2 btn btn-lg navright2">View All Users</a>
+                </li>
                 <li id="button-link" class="nav-item">
-                    <button href="#" id="signup" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="">View Classes</button>
+                    <button href="#" id="signup" class="nav-link btn btn-lg navright" onclick="LogOut()" data-toggle="modal" data-target="">Log Out</button>
                 </li>
             </ul>
         </div>

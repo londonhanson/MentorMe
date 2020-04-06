@@ -98,6 +98,7 @@
     <Content Include="AccountServices.js" />
     <Content Include="home.html" />
     <Content Include="SiteStyle.css" />
+    <Content Include="ViewUserAccounts.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />

@@ -1,12 +1,17 @@
 ﻿//place any global variables here! below
 
+var accountData = JSON.parse(localStorage.getItem("account"))
+
 function LogIn(email, pass) {
+    document.getElementById("signbtn").style.display = "none";
+    document.getElementById("spsignbtn").style.display = "block";
     //the url of the webservice we will be talking to
     var webMethod = "AccountServices.asmx/LogIn";
 
     var parameters = "{\"email\":\"" + encodeURI(email) + "\",\"pass\":\"" + encodeURI(pass) + "\"}";
 
     //jQuery ajax method
+
     $.ajax({
         //post is more secure than get, and allows
         //us to send big data if we want.  really just
@@ -14,6 +19,7 @@ function LogIn(email, pass) {
 
         type: "POST",
         //the url is set to the string we created above
+
         url: webMethod,
         //same with the data
         data: parameters,
@@ -37,20 +43,21 @@ function LogIn(email, pass) {
             if (account["email"] === email) {
                 window.localStorage.setItem("account", msg.d);
                 
-                alert("LogIn success");
+                //alert("LogIn success");
+
                 location.href = "./home.html"
             }
             else {
-                //document.getElementById("signbtn").style.display = "block";
-                //document.getElementById("spsignbtn").style.display = "none";
-                alert("Username and/or Password Is Incorrect");
+                document.getElementById("signbtn").style.display = "block";
+                document.getElementById("spsignbtn").style.display = "none";
+                alert("Username and/or Password is Incorrect");
                 return false;
             }
             
         },
         error: function (e) {
-            //document.getElementById("signbtn").style.display = "block";
-            //document.getElementById("spsignbtn").style.display = "none";
+            document.getElementById("signbtn").style.display = "block";
+            document.getElementById("spsignbtn").style.display = "none";
 
             alert(msg.d);
         }
@@ -81,19 +88,136 @@ function SignUp(email, password, firstName, lastName) {
     });
 }
 
+//logs the user off both at the client and at the server
+
+function LogOut() {
+    var webMethod = "AccountServices.asmx/LogOut";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            if (msg.d) {
+                //we logged off, so go back to logon page,
+                //stop checking messages
+                //and clear the chat panel
+                alert("You have been signed out.");
+                location.replace("./index.html");
+            }
+            else {
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
 function MentorNav() {
-    if (Session["isAdmin"].ToString() === "1") {
+    if (accountData["isAdmin"] === "True") {
         defaultNav = document.getElementById('myNavBar')
-        defaultNav.style.visibility = 'hidden';
+        defaultNav.style.display = 'none';
 
         altNav = document.getElementById('mentorNavBar')
-        altNav.style.visibility = 'visible';
+        altNav.style.display = "block";
     }
     else {
         defaultNav = document.getElementById('myNavBar')
-        defaultNav.style.visibility = 'visible';
+        defaultNav.style.display = "block";
 
         altNav = document.getElementById('mentorNavBar')
-        altNav.style.visibility = 'hidden';
+        altNav.style.display = "none";
     }
+}
+
+    // Admin Access 
+
+var accountsArray;
+
+function LoadAccounts() {
+    var webMethod = "AccountServices.asmx/GetAccounts";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            if (msg.d.length > 0) {
+                console.log(msg.d);
+                accountsArray = msg.d;
+                $("#accountsBox").empty();
+                // sort the id
+
+                function compare(a, b) {
+                    const IDA = a.accountID;
+                    const IDB = b.accountID;
+                    let comparison = 0;
+                    if (IDA > IDB) {
+                        comparison = 1;
+                    } else if (IDA < IDB) {
+                        comparison = -1;
+                    }
+                    return comparison;
+                }
+                accountsArray.sort(compare);
+                for (var i = 0; i < accountsArray.length; i++) {
+                    var acct;
+                    acct = "<tr><th scope = \"row\">" + accountsArray[i].accountID + "</th ><td>" + accountsArray[i].userName +
+                        "</td><td>" + accountsArray[i].firstName + "</td><td>" + accountsArray[i].lastName + "</td><td style=\"width: 10 %\">" +
+                        "<button type=\"button\" class=\"btn btn-primary\">" + "<a href=\"mailto:" + accountsArray[i].email +
+                        "\" style=\"color: aliceblue\">" + "Send Email" + "</button>" + "</td><td style=\"width: 6 %\">" +
+                        "<button type=\"button\" class=\"btn btn-info\">" + "Edit" + "</button>" + "</td><td>" +
+                        "<button type=\"button\" class=\"btn btn-warning\" onclick='DeleteAccount(" + accountsArray[i].accountID + ")'>" + "Delete" + "</button>" + "</td></tr>"
+
+                    $("#accountsBox").append(acct);
+                }
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
+function DeleteAccount(id) {
+    var webMethod = "AccountServices.asmx/DeleteAccount";
+    var parameters = "{\"id\":\"" + encodeURI(id) + "\"}";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            alert("Account Deleted");
+            location.replace("./ViewUserAccounts.html");
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
+    // This function can be used later, I think to make it work, we just need to change the parameters and add more function in there.
+
+function EditAccount() {
+    var webMethod = "AccountServices.asmx/UpdateAccount";
+    var parameters = "{\"accountID\":\"" + encodeURI(currentAccount.accountID) + "\",\"uid\":\"" + encodeURI($('#editLogonId').val()) + "\",\"password\":\"" + encodeURI($('#editLogonPassword').val()) + "\",\"firstName\":\"" + encodeURI($('#editLogonFName').val()) + "\",\"lastName\":\"" + encodeURI($('#editLogonLName').val()) + "\",\"email\":\"" + encodeURI($('#editLogonEmail').val()) + "\"}";
+
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            showPanel('accountsPanel');
+            LoadAccounts();
+        },
+        error: function (e) {
+            alert(e.msg);
+        }
+    });
 }

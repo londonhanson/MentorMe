@@ -127,5 +127,90 @@ namespace accountmanager
             //return the result!
         }
 
+        [WebMethod(EnableSession = true)]
+        public bool LogOut()
+        {
+            //if they log off, then we remove the session.
+
+            Session.Abandon();
+            return true;
+        }
+
+        // Admin Access
+
+        [WebMethod(EnableSession = true)]
+        public Account[] GetAccounts()
+        {
+      
+            //WE ONLY SHARE ACCOUNTS WITH LOGGED IN USERS!
+            if (Session["id"] != null)
+            {
+                DataTable sqlDt = new DataTable("accounts");
+
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+                string sqlSelect = "select accountId, email, password, firstName, lastName, department, isAdmin from accounts order by accountId";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                //gonna use this to fill a data table
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                //filling the data table
+                sqlDa.Fill(sqlDt);
+
+                //loop through each row in the dataset, creating instances
+                //of our container class Account.  Fill each acciount with
+                //data from the rows, then dump them in a list.
+                List<Account> accounts = new List<Account>();
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+                    //only share user id and pass info with admins!
+                    accounts.Add(new Account
+                    {
+                        id = Convert.ToInt32(sqlDt.Rows[i]["accountId"]),
+                        email = sqlDt.Rows[i]["email"].ToString(),
+                        password = sqlDt.Rows[i]["password"].ToString(),
+                        firstName = sqlDt.Rows[i]["firstName"].ToString(),
+                        lastName = sqlDt.Rows[i]["lastName"].ToString(),
+                        department = sqlDt.Rows[i]["department"].ToString(),
+                        isAdmin = (bool)sqlDt.Rows[i]["isAdmin"]
+                    });
+                }
+                //convert the list of accounts to an array and return!
+                return accounts.ToArray();
+            }
+            else
+            {
+                //if they're not logged in, return an empty array
+                return new Account[0];
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        public void DeleteAccount(string id)
+        {
+            if (Session["isAdmin"].ToString() == "true")
+            {
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+                string sqlSelect = "delete from accounts where accountID=@idValue";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@idValue", HttpUtility.UrlDecode(id));
+
+                sqlConnection.Open();
+                try
+                {
+                    sqlCommand.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+
+                }
+                sqlConnection.Close();
+            }
+        }
+
     }
 }

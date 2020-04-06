@@ -33,7 +33,7 @@
             <span class="glyphicon glyphicon-menu-hamburger"></span>
         </button>
         <a id="logo" class="navbar-brand" href="./index.html">MentorMe</a>
-        <div class="collapse navbar-collapse" id="myNavbar">
+        <div class="collapse navbar-collapse" id="myNavbar" style="float: right;">
             <ul id="link" class="nav navbar-nav ml-auto">
                 <li class="nav-item" id="about"><button href="#" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="#AboutUsForm">About Us</button></li>
                 <li class="nav-item" id="login"><button href="#" class="nav-link btn btn-lg navright" data-toggle="modal" data-target="#ModalExample">Log In</button></li>
@@ -96,7 +96,11 @@
                         </div>
                         <div class="form-group">
                             <div>
-                                <button type="submit" class="btn btn-info btn-block">Log In</button>
+                                <button type="submit" class="btn btn-info btn-lg btn-block" style="display: block;" id="signbtn">Log In</button>
+                                <button class="btn btn-info btn-lg btn-block" style="display: none" id="spsignbtn">
+                                    <span class="spinner-border spinner-border-sm"></span>
+                                    Logging in..
+                                </button>
                             </div>
                         </div>
                         <div class="form-group text-center">
