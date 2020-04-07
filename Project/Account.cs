@@ -18,5 +18,6 @@ namespace accountmanager
 		public string email;
 		public string areaOfFocus;
 		public bool isAdmin;
+        public string accountType;
 	}
 }
