@@ -37,7 +37,7 @@
         <div class="collapse navbar-collapse" id="mentorNavBar">
             <ul id="link" class="nav navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="ViewUserAccounts.html" id="btnViewUsers" class="nav-link2 btn btn-lg navright2">View All Users</a>
+                    <p id="DisplayEmail"></p>
                 </li>
                 <li id="button-link" class="nav-item">
                     <button href="#" id="signup" class="nav-link btn btn-lg navright" onclick="LogOut()" data-toggle="modal" data-target="">Log Out</button>
@@ -58,7 +58,8 @@
                             <img src="./img/Example.png" alt="User">
                         </div>
                         <div class="user-data">
-                            <h4>User's Name</h4><span>User's bio or position</span>
+                            <h4 id="fullName">User's Name</h4>
+                            <p id="bioField">Bio not entered</p>
                         </div>
                     </div>
                 </aside>
@@ -75,7 +76,7 @@
                     <a class="list-group-item" href="#"><i class="fa fa-map"></i>Messages</a>
                 </nav>
                 <nav class="list-group" id="adminform">
-                    <a class="list-group-item with-badge active" href="#"><i class=" fa fa-th"></i>View All Users</a>
+                    <a class="list-group-item with-badge active" href="./ViewUserAccounts.html"><i class=" fa fa-th"></i>View All Users</a>
                     <a class="list-group-item" href="#"><i class="fa fa-user"></i>View All Classes</a>
                 </nav>
             </div>
