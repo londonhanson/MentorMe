@@ -36,15 +36,13 @@ function LogIn(email, pass) {
                 account = { "email": "none" };
             }
             else {
+                console.log(msg.d)
                 account = JSON.parse(msg.d);
-
-
+                console.log(account)
             }
             if (account["email"] === email) {
                 window.localStorage.setItem("account", msg.d);
-                
                 //alert("LogIn success");
-
                 location.href = "./home.html"
             }
             else {
@@ -53,7 +51,6 @@ function LogIn(email, pass) {
                 alert("Username and/or Password is Incorrect");
                 return false;
             }
-            
         },
         error: function (e) {
             document.getElementById("signbtn").style.display = "block";
@@ -136,11 +133,20 @@ function MentorNav() {
         profileform.style.display = 'none';
     }
     else {
-        menteeform.style.display = 'block';
-        mentorform.style.display = 'none';
-        adminform.style.display = 'none';
-        videalluserform.style.display = 'none';
-        profileform.style.display = 'block';
+        if (accountData["accountType"] === "Mentee") {
+            menteeform.style.display = 'block';
+            mentorform.style.display = 'none';
+            adminform.style.display = 'none';
+            videalluserform.style.display = 'none';
+            profileform.style.display = 'block';
+        }
+        else {
+            menteeform.style.display = 'none';
+            mentorform.style.display = 'block';
+            adminform.style.display = 'none';
+            videalluserform.style.display = 'none';
+            profileform.style.display = 'block';
+        }
     }
 }
 

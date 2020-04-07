@@ -82,7 +82,7 @@ namespace accountmanager
                 // for later use
                 Session["randomNumber"] = -1;
                 account = "{" + "\"id\"" + ":" + "\"" + Session["id"] + "\"" + ","
-                    + "\"accountType\"" + ":" + "\"" + Session["accountType"].ToString() + "\""
+                    + "\"accountType\"" + ":" + "\"" + Session["accountType"].ToString() + "\"" + ","
                     + "\"email\"" + ":" + "\"" + Session["email"].ToString() + "\"" + ","
                     + "\"firstName\"" + ":" + "\"" + Session["firstName"].ToString() + "\"" + ","
                     + "\"lastName\"" + ":" + "\"" + Session["lastName"].ToString() + "\"" + ","
