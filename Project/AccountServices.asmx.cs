@@ -42,7 +42,7 @@ namespace accountmanager
             //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
             //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
 
-            string sqlSelect = "SELECT accountId, email, password, firstName, lastName, bio, department, isAdmin FROM accounts WHERE email=@emailValue and password=@passValue";
+            string sqlSelect = "SELECT accountId, email, password, firstName, lastName, bio, areaOfFocus, isAdmin FROM accounts WHERE email=@emailValue and password=@passValue";
 
 
             //set up our connection object to be ready to use our connection string
@@ -75,7 +75,7 @@ namespace accountmanager
                 Session["firstName"] = sqlDt.Rows[0]["firstName"];
                 Session["lastName"] = sqlDt.Rows[0]["lastName"];
                 Session["bio"] = sqlDt.Rows[0]["bio"];
-                Session["department"] = sqlDt.Rows[0]["department"];
+                Session["areaOfFocus"] = sqlDt.Rows[0]["areaOfFocus"];
                 Session["isAdmin"] = sqlDt.Rows[0]["isAdmin"];
 
                 // for later use
@@ -86,7 +86,7 @@ namespace accountmanager
                     + "\"lastName\"" + ":" + "\"" + Session["lastName"].ToString() + "\"" + ","
                     + "\"bio\"" + ":" + "\"" + Session["bio"].ToString() + "\"" + ","
                     + "\"isAdmin\"" + ":" + "\"" + Session["isAdmin"] + "\"" + ","
-                    + "\"department\"" + ":" + "\"" + Session["department"].ToString() + "\"" + "}";
+                    + "\"areaOfFocus\"" + ":" + "\"" + Session["areaOfFocus"].ToString() + "\"" + "}";
 
             }
             //return the result!
@@ -149,7 +149,7 @@ namespace accountmanager
                 DataTable sqlDt = new DataTable("accounts");
 
                 string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
-                string sqlSelect = "select accountId, email, password, firstName, lastName, department, isAdmin from accounts order by accountId";
+                string sqlSelect = "select accountId, email, password, firstName, lastName, areaOfFocus, isAdmin from accounts order by accountId";
 
                 MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -173,7 +173,7 @@ namespace accountmanager
                         password = sqlDt.Rows[i]["password"].ToString(),
                         firstName = sqlDt.Rows[i]["firstName"].ToString(),
                         lastName = sqlDt.Rows[i]["lastName"].ToString(),
-                        department = sqlDt.Rows[i]["department"].ToString(),
+                        areaOfFocus = sqlDt.Rows[i]["areaOfFocus"].ToString(),
                         isAdmin = (bool)sqlDt.Rows[i]["isAdmin"]
                     });
                 }
@@ -190,7 +190,7 @@ namespace accountmanager
         [WebMethod(EnableSession = true)]
         public void DeleteAccount(string id)
         {
-            if (Session["isAdmin"].ToString() == "true")
+            if (Session["isAdmin"].ToString() == "True")
             {
                 string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
                 string sqlSelect = "delete from accounts where accountID=@idValue";
@@ -208,6 +208,42 @@ namespace accountmanager
                 catch (Exception e)
                 {
 
+                }
+                sqlConnection.Close();
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        public void UpdateAccount(string accountId, string email, string pass, string firstName, string lastName, string areaOfFocus, string accountType)
+        {
+            //WRAPPING THE WHOLE THING IN AN IF STATEMENT TO CHECK IF THEY ARE AN ADMIN!
+            if (Session["isAdmin"].ToString() == "True")
+            {
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+                //this is a simple update, with parameters to pass in values
+                string sqlSelect = "update accounts set email=@emailValue, password=@passValue, firstName=@fnameValue, lastName=@lnameValue, " +
+                    "areaOfFocus=@areaOfFocusValue, accountType=@accountTypeValue where accountId=@accountIdValue";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@accountIdValue", HttpUtility.UrlDecode(accountId));
+                sqlCommand.Parameters.AddWithValue("@emailValue", HttpUtility.UrlDecode(email));
+                sqlCommand.Parameters.AddWithValue("@passValue", HttpUtility.UrlDecode(pass));
+                sqlCommand.Parameters.AddWithValue("@fnameValue", HttpUtility.UrlDecode(firstName));
+                sqlCommand.Parameters.AddWithValue("@lnameValue", HttpUtility.UrlDecode(lastName));
+                sqlCommand.Parameters.AddWithValue("@areaOfFocusValue", HttpUtility.UrlDecode(areaOfFocus));
+                sqlCommand.Parameters.AddWithValue("@accountTypeValue", HttpUtility.UrlDecode(accountType));
+
+                sqlConnection.Open();
+                //we're using a try/catch so that if the query errors out we can handle it gracefully
+                //by closing the connection and moving on
+                try
+                {
+                    sqlCommand.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
                 }
                 sqlConnection.Close();
             }

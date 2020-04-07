@@ -16,7 +16,7 @@ namespace accountmanager
 		public string firstName;
 		public string lastName;
 		public string email;
-		public string department;
+		public string areaOfFocus;
 		public bool isAdmin;
 	}
 }
