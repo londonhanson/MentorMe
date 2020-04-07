@@ -42,7 +42,7 @@ namespace accountmanager
             //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
             //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
 
-            string sqlSelect = "SELECT accountId, email, password, firstName, lastName, bio, areaOfFocus, isAdmin FROM accounts WHERE email=@emailValue and password=@passValue";
+            string sqlSelect = "SELECT accountId, accountType, email, password, firstName, lastName, bio, areaOfFocus, isAdmin FROM accounts WHERE email=@emailValue and password=@passValue";
 
 
             //set up our connection object to be ready to use our connection string
@@ -71,6 +71,7 @@ namespace accountmanager
                 //so we can check those values later on other method calls to see if they 
                 //are 1) logged in at all, and 2) and admin or not
                 Session["id"] = sqlDt.Rows[0]["accountId"];
+                Session["accountType"] = sqlDt.Rows[0]["accountType"];
                 Session["email"] = sqlDt.Rows[0]["email"];
                 Session["firstName"] = sqlDt.Rows[0]["firstName"];
                 Session["lastName"] = sqlDt.Rows[0]["lastName"];
@@ -81,6 +82,7 @@ namespace accountmanager
                 // for later use
                 Session["randomNumber"] = -1;
                 account = "{" + "\"id\"" + ":" + "\"" + Session["id"] + "\"" + ","
+                    + "\"accountType\"" + ":" + "\"" + Session["accountType"].ToString() + "\""
                     + "\"email\"" + ":" + "\"" + Session["email"].ToString() + "\"" + ","
                     + "\"firstName\"" + ":" + "\"" + Session["firstName"].ToString() + "\"" + ","
                     + "\"lastName\"" + ":" + "\"" + Session["lastName"].ToString() + "\"" + ","
@@ -149,7 +151,7 @@ namespace accountmanager
                 DataTable sqlDt = new DataTable("accounts");
 
                 string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
-                string sqlSelect = "select accountId, email, password, firstName, lastName, areaOfFocus, isAdmin from accounts order by accountId";
+                string sqlSelect = "select accountId, accountType, email, password, firstName, lastName, areaOfFocus, isAdmin from accounts order by accountId";
 
                 MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -169,6 +171,7 @@ namespace accountmanager
                     accounts.Add(new Account
                     {
                         id = Convert.ToInt32(sqlDt.Rows[i]["accountId"]),
+                        accountType = sqlDt.Rows[i]["accountType"].ToString(),
                         email = sqlDt.Rows[i]["email"].ToString(),
                         password = sqlDt.Rows[i]["password"].ToString(),
                         firstName = sqlDt.Rows[i]["firstName"].ToString(),
