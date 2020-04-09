@@ -285,4 +285,19 @@ body {
     }
 
 
+    .profileform {
+        margin-bottom: 30px;
+        padding-top: 3px;
+    }
+    .profileform .profileformout {
+        font-family: 'Sen', sans-serif;
+    }
+
+    #inputEmail {
+        margin-bottom: 30px;
+    }
+
+    .button-control{
+        margin-top:50px;
+    }
 

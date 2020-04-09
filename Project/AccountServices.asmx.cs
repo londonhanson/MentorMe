@@ -252,5 +252,38 @@ namespace accountmanager
             }
         }
 
+        [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
+        public void updateProfile(string email, string bio, string id)
+        {
+            //our connection string comes from our web.config file like we talked about earlier
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+            //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
+            //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
+            string sqlAddAcct = "UPDATE accounts SET email = @email, bio = @bio WHERE accountId=@accountIdValue";
+            //"SELECT userName, password FROM accounts WHERE userName=@idValue and password=@passValue";
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlAddAcct, sqlConnection);
+
+            //tell our command to replace the @parameters with real values
+            //we decode them because they came to us via the web so they were encoded
+            //for transmission (funky characters escaped, mostly)
+            sqlCommand.Parameters.AddWithValue("@email", HttpUtility.UrlDecode(email));
+            sqlCommand.Parameters.AddWithValue("@bio", HttpUtility.UrlDecode(bio));
+            sqlCommand.Parameters.AddWithValue("@accountIdValue", HttpUtility.UrlDecode(id));
+
+            sqlConnection.Open();
+
+            try
+            {
+                int accountID = Convert.ToInt32(sqlCommand.ExecuteScalar());
+            }
+            catch (Exception)
+            {
+
+            }
+            sqlConnection.Close();
+            //return the result!
+        }
+
     }
 }

@@ -98,21 +98,24 @@
                             <tr>
                                 <td>
                                     <div class="row">
-                                        <label for="inputFirst" class="sr-only">First Name</label>
-                                        <input type="text" id="inputFirst" class="form-control" placeholder="First Name" required="">
+                                        <h5 class="profileform col-2 align-baseline">First Name: </h5>
+                                        <h4 class="profileformout col-10 align-top" id="first"></h4>
                                     </div>
                                     <div class="row">
-                                        <label for="inputLast" class="sr-only">Last Name</label>
-                                        <input type="text" id="inputLast" class="form-control" placeholder="Last Name" required="">
+                                        <h5 class=" profileform col-2 align-baseline">Last Name: </h5>
+                                        <h4 class="profileformout col-10 align-top" id="last"></h4>
                                     </div>
                                     <div class="row">
-                                        <label for="inputEmail" class="sr-only">e-Mail</label>
-                                        <input type="email" id="inputEmail" class="form-control" placeholder="E-Mail" required="">
+                                        <h5 class=" profileform col-2 align-baseline">Email: </h5>
+                                        <label for="inputEmail" class="sr-only ">e-Mail</label>
+                                        <input type="email" id="inputEmail" class="form-control col-5" placeholder="E-Mail" required="">
                                     </div>
                                     <div class="row">
+                                        <h5 class=" profileform col-2 align-baseline">Bio: </h5>
                                         <label for="Bio" class="sr-only py-5">Bio</label>
-                                        <textarea name="Bio" id="Bio" cols="40" rows="5" class="form-control " placeholder="Bio" required=""></textarea>
+                                        <textarea name="Bio" id="Bio" cols="40" rows="5" class="form-control col-10" placeholder="Bio"></textarea>
                                     </div>
+                                    <div class="row float-right"><button type="button" class="btn btn-primary button-control" onclick="update()">Save My Profile</button></div>
                                 </td>
                         </tbody>
                     </table>

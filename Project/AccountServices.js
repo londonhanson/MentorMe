@@ -122,6 +122,7 @@ function MentorNav() {
     var adminform = document.getElementById('adminform')
     var videalluserform = document.getElementById('videalluserform')
     var profileform = document.getElementById('Example')
+
     DisplayData();
     if (accountData["isAdmin"] === "True") {
         LoadAccounts();
@@ -161,7 +162,17 @@ function DisplayData() {
 
     if (!accountData["bio"] == null || !accountData["bio"] == "") {
         document.getElementById("bioField").innerHTML = accountData["bio"];
+        document.getElementById('Bio').value = accountData["bio"];
     }
+
+    // profile form info display 
+    var firstName = document.getElementById('first')
+    firstName.innerHTML = accountData["firstName"]
+    var lastName = document.getElementById('last')
+    lastName.innerHTML = accountData["lastName"]
+    var emailAddress = document.getElementById('inputEmail')
+    emailAddress.value = accountData['email']
+    
 }
 
 function LoadAccounts() {
@@ -255,4 +266,33 @@ function EditAccount(email, password, firstName, lastName, areaOfFocus, accountT
         }
     });
 
+}
+
+
+
+// profile update
+function update() {
+    var email = document.getElementById("inputEmail").value
+    var bio = document.getElementById("Bio").value
+    var webMethod = "AccountServices.asmx/updateProfile";
+    var parameters = "{\"email\":\"" + encodeURI(email) +
+        "\", \"bio\":\"" + encodeURI(bio) +
+        "\",\"id\":\"" + encodeURI(accountData['id']) + "\"}";
+
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (msg) {
+            alert("Profile Saved!");
+
+            location.href = "home.html"
+        },
+        error: function (e) {
+            alert("Failed to save your profile. Try again.");
+        }
+    });
 }
