@@ -99,7 +99,7 @@
     <Content Include="home.html" />
     <Content Include="SiteStyle.css" />
     <Content Include="ViewUserAccounts.html" />
-    <Content Include="AvailableClasses.html" />
+    <Content Include="FindCourses.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
