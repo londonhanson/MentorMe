@@ -2,9 +2,12 @@
 {
     public class Course
     {
-        public int classId;
+        // All info for class array
+        // Will be able to display info about every class
+        public int courseId;
         public int mentorId;
-        public string className;
-        public string classDesc;
+        public string courseName;
+        public string courseDesc;
+        public string courseFocus;
     }
 }

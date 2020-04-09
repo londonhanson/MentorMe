@@ -296,7 +296,7 @@ namespace accountmanager
                 DataTable sqlDt = new DataTable("courses");
 
                 string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
-                string sqlSelect = "select classId, mentorId, className, classDescription from classes order by classId";
+                string sqlSelect = "select classId, mentorId, className, classDescription, classFocus from classes order by classId";
 
                 MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -319,6 +319,7 @@ namespace accountmanager
                         mentorId = Convert.ToInt32(sqlDt.Rows[i]["mentorId"]),
                         courseName = sqlDt.Rows[i]["className"].ToString(),
                         courseDesc = sqlDt.Rows[i]["classDescription"].ToString(),
+                        courseFocus = sqlDt.Rows[i]["classFocus"].ToString()
                     });
                 }
                 //convert the list of courses to an array and return!
