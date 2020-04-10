@@ -68,8 +68,8 @@
                 <nav class="list-group" id="menteeform">
 
                     <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('mycalssesformMentee',this)"><i class="fa fa-user"></i>My Classes</a>
-                    <a class="list-group-item activesign" href="./AvailableClasses.html" onclick="switchforms('findClassform') ,this"><i class="fa fa-user"></i>Find A Class</a>
-                    <a class="list-group-item activesign" href="./FindCourses.html" onclick="switchforms('findMentorform',this)"><i class="fa fa-user" ></i>Find A Mentor</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('findClassform', this); LoadCourses()"><i class="fa fa-user"></i>Find A Class</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('findMentorform',this)"><i class="fa fa-user" ></i>Find A Mentor</a>
                     <a class="list-group-item activesign" href="#" onclick="switchforms('messageForm',this)"><i class="fa fa-map" ></i>Messages</a>
                     <a class="list-group-item activesign" href="#" onclick="switchforms('Example',this)"><i class=" fa fa-th"></i>My Profile</a>
 
@@ -188,7 +188,12 @@
                     <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
                         <thead>
                             <tr>
-                                <th>Find A Class</th>
+                                <th scope="col">Course ID</th>
+                                <th scope="col">Mentor ID</th>
+                                <th scope="col">Course Name</th>
+                                <th scope="col">Course Description</th>
+                                <th scope="col">Course Focus</th>
+                                <th scope="col" style="width:120px">Join Class</th>
                             </tr>
                         </thead>
                         <tbody id="classDisplay"></tbody>

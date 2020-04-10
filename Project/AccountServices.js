@@ -371,8 +371,8 @@ function LoadCourses() {
             console.log(msg);
             if (msg.d.length > 0) {
                 console.log(msg.d);
-                accountsArray = msg.d;
-                $("#coursesBox").empty();
+                coursesArray = msg.d;
+                $("#classDisplay").empty();
                 // sort the id
 
                 function compare(a, b) {
@@ -386,16 +386,14 @@ function LoadCourses() {
                     }
                     return comparison;
                 }
-                accountsArray.sort(compare);
+                coursesArray.sort(compare);
                 for (var i = 0; i < coursesArray.length; i++) {
                     currentId = parseInt(coursesArray[i].courseId);
                     var course;
                     course = "<tr><th scope = \"row\">" + coursesArray[i].courseId + "</th ><td>" + coursesArray[i].mentorId +
-                        "</td><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" +
-                        "</td><td>" + coursesArray[i].courseFocus + "</td><td>"
-                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#JoinCourse\">" + "Join" + "</button>" + "</td></tr>"
-
-                    $("#coursesBox").append(course);
+                        "</td><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
+                    "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#JoinCourse\">" + "Join" + "</button>" + "</td></tr>"
+                    $("#classDisplay").append(course);
                 }
             }
         },
