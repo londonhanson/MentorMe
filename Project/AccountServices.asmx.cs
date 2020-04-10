@@ -285,5 +285,52 @@ namespace accountmanager
             //return the result!
         }
 
+        [WebMethod(EnableSession = true)]
+        public Course[] GetCourses()
+        {
+            //GetCourses will display all courses to mentees when trying to join a new course
+
+            //WE ONLY SHARE CLASSES WITH LOGGED IN USERS!
+            if (Session["id"] != null)
+            {
+                DataTable sqlDt = new DataTable("courses");
+
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+                string sqlSelect = "select classId, mentorId, className, classDescription, classFocus from classes order by classId";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                //gonna use this to fill a data table
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                //filling the data table
+                sqlDa.Fill(sqlDt);
+
+                //loop through each row in the dataset, creating instances
+                //of our container class Courses.  Fill each course with
+                //data from the rows, then dump them in a list.
+                List<Course> courses = new List<Course>();
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+                    //only share user id and pass info with admins!
+                    courses.Add(new Course
+                    {
+                        courseId = Convert.ToInt32(sqlDt.Rows[i]["classId"]),
+                        mentorId = Convert.ToInt32(sqlDt.Rows[i]["mentorId"]),
+                        courseName = sqlDt.Rows[i]["className"].ToString(),
+                        courseDesc = sqlDt.Rows[i]["classDescription"].ToString(),
+                        courseFocus = sqlDt.Rows[i]["classFocus"].ToString()
+                    });
+                }
+                //convert the list of courses to an array and return!
+                return courses.ToArray();
+            }
+            else
+            {
+                //if they're not logged in, return an empty array
+                return new Course[0];
+            }
+        }
+
     }
 }

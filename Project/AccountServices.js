@@ -359,3 +359,48 @@ function update() {
         }
     });
 }
+
+function LoadCourses() {
+    var webMethod = "AccountServices.asmx/GetCourses";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            if (msg.d.length > 0) {
+                console.log(msg.d);
+                accountsArray = msg.d;
+                $("#coursesBox").empty();
+                // sort the id
+
+                function compare(a, b) {
+                    const IDA = a.courseID;
+                    const IDB = b.courseID;
+                    let comparison = 0;
+                    if (IDA > IDB) {
+                        comparison = 1;
+                    } else if (IDA < IDB) {
+                        comparison = -1;
+                    }
+                    return comparison;
+                }
+                accountsArray.sort(compare);
+                for (var i = 0; i < coursesArray.length; i++) {
+                    currentId = parseInt(coursesArray[i].courseId);
+                    var course;
+                    course = "<tr><th scope = \"row\">" + coursesArray[i].courseId + "</th ><td>" + coursesArray[i].mentorId +
+                        "</td><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" +
+                        "</td><td>" + coursesArray[i].courseFocus + "</td><td>"
+                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#JoinCourse\">" + "Join" + "</button>" + "</td></tr>"
+
+                    $("#coursesBox").append(course);
+                }
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}

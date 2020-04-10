@@ -99,7 +99,7 @@
     <Content Include="home.html" />
     <Content Include="SiteStyle.css" />
     <Content Include="ViewUserAccounts.html" />
-    <Content Include="AvailableClasses.html" />
+    <Content Include="FindCourses.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
@@ -119,6 +119,7 @@
     <Compile Include="uploadbutton.aspx.designer.cs">
       <DependentUpon>uploadbutton.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Course.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
