@@ -66,20 +66,20 @@
                     </div>
                 </aside>
                 <nav class="list-group" id="menteeform">
-                    <a class="list-group-item with-badge active" href="#"><i class=" fa fa-th"></i>My Profile</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>My Classes</a>
-                    <a class="list-group-item" href="./AvailableClasses.html"><i class="fa fa-user"></i>Find A Class</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>Find A Mentor</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-map"></i>Messages</a>
+                    <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('mycalssesformMentee',this)"><i class="fa fa-user"></i>My Classes</a>
+                    <a class="list-group-item activesign" href="./AvailableClasses.html" onclick="switchforms('findClassform') ,this"><i class="fa fa-user"></i>Find A Class</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('findMentorform',this)"><i class="fa fa-user" ></i>Find A Mentor</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('messageForm',this)"><i class="fa fa-map" ></i>Messages</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('Example',this)"><i class=" fa fa-th"></i>My Profile</a>
                 </nav>
                 <nav class="list-group" id="mentorform">
-                    <a class="list-group-item with-badge active" href="#"><i class=" fa fa-th"></i>My Profile</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>My Classes</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-map"></i>Messages</a>
+                    <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('mycalssesformMentor',this)"><i class="fa fa-user" ></i>My Classes</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('messageForm',this)"><i class="fa fa-map" ></i>Messages</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('Example',this)"><i class=" fa fa-th"></i>My Profile</a>
                 </nav>
                 <nav class="list-group" id="adminform">
-                    <a class="list-group-item with-badge active" href="./ViewUserAccounts.html"><i class=" fa fa-th"></i>View All Users</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>View All Classes</a>
+                    <a class="list-group-item with-badge activesign active" href="./ViewUserAccounts.html" onclick="switchforms('videalluserform',this)"><i class=" fa fa-th"></i>View All Users</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('viewallclassform',this)"><i class="fa fa-user" ></i>View All Classes</a>
                 </nav>
             </div>
 
@@ -139,9 +139,120 @@
                             </tr>
                         </thead>
                         <tbody id="accountsBox"></tbody>
-                      </table>
+                    </table>
                 </div><!--Table end-->
             </div><!--Form end-->
+            <!--my calsses form for mentee-->
+            <div class="col-lg-8" id="mycalssesformMentee">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th>My Classes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="classesMentee"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+
+
+            <!--messageForm-->
+            <div class="col-lg-8" id="messageForm">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th>My Messages</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messageDisplay"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+            <!--findClassform-->
+            <div class="col-lg-8" id="findClassform">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th>Find A Class</th>
+                            </tr>
+                        </thead>
+                        <tbody id="classDisplay"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+            <!--findMentorform-->
+            <div class="col-lg-8" id="findMentorform">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th>Find Mentor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="findMentorDisplay"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+            <!--mycalssesformMentor-->
+            <div class="col-lg-8" id="mycalssesformMentor">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th>My Classes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mycalssesformMentorDisplay"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+            <!--viewallclassform-->
+            <div class="col-lg-8" id="viewallclassform">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th>View All Classes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allClassDisplay"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         </div>
     </div>

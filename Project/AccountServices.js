@@ -116,12 +116,24 @@ function LogOut() {
 }
 
 function MentorNav() {
+    // nav section
     var mode = document.getElementById("mode")
     var mentorform = document.getElementById('mentorform')
     var menteeform = document.getElementById('menteeform')
     var adminform = document.getElementById('adminform')
+
+    //table section(right section)
     var videalluserform = document.getElementById('videalluserform')
     var profileform = document.getElementById('Example')
+    var viewallclassform = document.getElementById('viewallclassform')
+    var mycalssesformMentor = document.getElementById('mycalssesformMentor')
+    var findMentorform = document.getElementById('findMentorform')
+    var findClassform = document.getElementById('findClassform')
+    var messageForm = document.getElementById('messageForm')
+    var mycalssesformMentee = document.getElementById('mycalssesformMentee')
+
+
+
 
     DisplayData();
     if (accountData["isAdmin"] === "True") {
@@ -130,26 +142,77 @@ function MentorNav() {
         adminform.style.display = 'block';
         menteeform.style.display = 'none';
         mentorform.style.display = 'none';
+        // right
         videalluserform.style.display = 'block';
+        viewallclassform.style.display = 'none';
+        mycalssesformMentor.style.display = 'none';
+        findMentorform.style.display = 'none';
         profileform.style.display = 'none';
+        findClassform.style.display = 'none';
+        messageForm.style.display = 'none';
+        mycalssesformMentee.style.display = 'none';
+
     }
     else {
         if (accountData["accountType"] === "Mentee") {
             menteeform.style.display = 'block';
             mentorform.style.display = 'none';
             adminform.style.display = 'none';
+            // right
             videalluserform.style.display = 'none';
-            profileform.style.display = 'block';
+            viewallclassform.style.display = 'none';
+            mycalssesformMentor.style.display = 'none';
+            findMentorform.style.display = 'none';
+            profileform.style.display = 'none';
+            findClassform.style.display = 'none';
+            messageForm.style.display = 'none';
+            mycalssesformMentee.style.display = 'block';
         }
         else {
             menteeform.style.display = 'none';
             mentorform.style.display = 'block';
             adminform.style.display = 'none';
+            // right
             videalluserform.style.display = 'none';
-            profileform.style.display = 'block';
+            viewallclassform.style.display = 'none';
+            mycalssesformMentor.style.display = 'block';
+            findMentorform.style.display = 'none';
+            profileform.style.display = 'none';
+            findClassform.style.display = 'none';
+            messageForm.style.display = 'none';
+            mycalssesformMentee.style.display = 'none';
         }
     }
 }
+
+
+function switchforms(formname, element) {
+    console.log(formname)
+    var formList = ["viewallclassform", "mycalssesformMentor", "findMentorform", "findClassform", "messageForm", "mycalssesformMentee", "Example", "videalluserform"]
+
+    formList.forEach(switchs)
+    //buttonActive.forEach(switch2)
+    function switchs(forms) {
+        
+        if (forms === formname) {
+            document.getElementById(forms).style.display = "block"
+            switch2()
+            element.classList.add("active");
+        }
+        else {
+            document.getElementById(forms).style.display = "none"
+        }
+    }
+
+    function switch2() {
+        var buttonActive = document.getElementsByClassName('activesign')
+        for (var i = 0; i < buttonActive.length; i++) {
+            buttonActive[i].classList.remove("active")
+        }
+        
+    }
+}
+
 
 var accountsArray;
 var currentId;
