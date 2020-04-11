@@ -422,8 +422,38 @@ function LoadMessage() {
                     var message;
                     message = "<tr><th scope = \"row\">" + messageArray[i].senderName + "</th ><td>" + messageArray[i].msg +
                         "</td><td>" + messageArray[i].date + "</td><td>" +
-                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#ReplyMessage\">" + "Reply" + "</button>" + "</td></tr>"
+                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#SendMessage\" onclick = \"GetSender(" + messageArray[i].senderID + ", '" + messageArray[i].senderName + "')\">" + "Reply" + "</button>" + "</td></tr>"
                     $("#messageDisplay").append(message);
+                }
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
+
+
+function LoadMentor() {
+    var webMethod = "AccountServices.asmx/GetMentor";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            if (msg.d.length > 0) {
+                console.log(msg.d);
+                mentorArray = msg.d;
+                $("#findMentorDisplay").empty();
+
+                for (var i = 0; i < mentorArray.length; i++) {
+                    var mentors;
+                    mentors = "<tr><th scope = \"row\">" + mentorArray[i].MentorName + "</th ><td>" + mentorArray[i].MentorArea +
+                        "</td><td>" + "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#SendMessage\" onclick = \"GetReceiver(" + mentorArray[i].MentorID + ", '" +  mentorArray[i].MentorName + "')\">" + "Send Message" + "</button>" + "</td></tr>"
+                    $("#findMentorDisplay").append(mentors);
                 }
             }
         },
@@ -451,4 +481,45 @@ function search() {
             }
         }
     }
+}
+
+
+var receiver;
+function GetReceiver(targetID, name) {
+    var head = document.getElementById("MSGhead")
+    var lableName = document.getElementById("receiverName")
+    head.innerHTML = "Send Message"
+    lableName.innerHTML = "Message to " + name
+    receiver = targetID;
+    console.log(receiver)
+}
+
+
+function GetSender(senderID, senderName) {
+    var head = document.getElementById("MSGhead")
+    var lableName = document.getElementById("receiverName")
+    head.innerHTML = "Reply Message"
+    lableName.innerHTML = "Reply to " + senderName
+    receiver = senderID;
+}
+
+function SendMessage(msg) {
+    var webMethod = "AccountServices.asmx/SendMessage";
+    var parameters = "{\"targetID\":\"" + encodeURI(receiver) +
+        "\", \"msg\":\"" + encodeURI(msg) + "\"}";
+
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (msg) {
+            alert("Message Sent! ");
+        },
+        error: function (e) {
+            alert("Failed to Send the Message. Try again.");
+        }
+    });
 }

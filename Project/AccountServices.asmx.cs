@@ -366,6 +366,7 @@ namespace accountmanager
                     Messages.Add(new Message
                     {
                         senderName = sqlDt.Rows[i]["firstName"].ToString() + " " + sqlDt.Rows[i]["lastName"].ToString(),
+                        senderID = Convert.ToInt32(sqlDt.Rows[i]["SenderID"]),
                         receiverID = Convert.ToInt32(sqlDt.Rows[i]["ReceiverID"]),
                         msg = sqlDt.Rows[i]["message"].ToString(),
                         date = sqlDt.Rows[i]["DateAndTime"].ToString()
@@ -380,6 +381,89 @@ namespace accountmanager
                 return new Message[0];
             }
         }
+
+        [WebMethod(EnableSession = true)]
+        public Mentor[] GetMentor()
+        {
+            //GetMentor will dispaly all the mentors. 
+
+            //WE ONLY SHARE mentors WITH LOGGED IN USERS!
+            if (Session["id"] != null)
+            {
+                DataTable sqlDt = new DataTable("mentor");
+
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+                string sqlSelect = "SELECT accountId, firstName, lastName, areaOfFocus from accounts where accountType = 'Mentor'";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+
+                //gonna use this to fill a data table
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                //filling the data table
+                sqlDa.Fill(sqlDt);
+
+                //loop through each row in the dataset, creating instances
+                //of our container class Courses.  Fill each course with 
+                //data from the rows, then dump them in a list.
+                List<Mentor> Mentors = new List<Mentor>();
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+                    //only share user id and pass info with admins!
+                    Mentors.Add(new Mentor
+                    {
+
+                        MentorName = sqlDt.Rows[i]["firstName"].ToString() + " " + sqlDt.Rows[i]["lastName"].ToString(),
+                        MentorID = sqlDt.Rows[i]["accountId"].ToString(),
+                        MentorArea = sqlDt.Rows[i]["areaOfFocus"].ToString()
+                    });
+                }
+                //convert the list of courses to an array and return!
+                return Mentors.ToArray();
+            }
+            else
+            {
+                //if they're not logged in, return an empty array
+                return new Mentor[0];
+            }
+        }
+
+
+        [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
+        public void SendMessage(string targetID, string msg)
+        {
+            //our connection string comes from our web.config file like we talked about earlier
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+            //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
+            //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
+            string sqlAddAcct = "INSERT INTO message (SenderID, ReceiverID, Message) VALUES (@senderid, @targetID, @msg);";
+            //"SELECT userName, password FROM accounts WHERE userName=@idValue and password=@passValue";
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlAddAcct, sqlConnection);
+
+            //tell our command to replace the @parameters with real values
+            //we decode them because they came to us via the web so they were encoded
+            //for transmission (funky characters escaped, mostly)
+            sqlCommand.Parameters.AddWithValue("@targetID", HttpUtility.UrlDecode(targetID));
+            sqlCommand.Parameters.AddWithValue("@msg", HttpUtility.UrlDecode(msg));
+            sqlCommand.Parameters.AddWithValue("@senderid", HttpUtility.UrlDecode(Session["id"].ToString()));
+
+
+            sqlConnection.Open();
+
+            try
+            {
+                int accountID = Convert.ToInt32(sqlCommand.ExecuteScalar());
+            }
+            catch (Exception)
+            {
+
+            }
+            sqlConnection.Close();
+            //return the result!
+        }
+
 
     }
 }
