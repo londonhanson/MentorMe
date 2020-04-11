@@ -332,5 +332,54 @@ namespace accountmanager
             }
         }
 
+        [WebMethod(EnableSession = true)]
+        public Message[] GetMessage()
+        {
+            //GetMesage will dispaly the message loged accound received. 
+
+            //WE ONLY SHARE Message WITH LOGGED IN USERS!
+            if (Session["id"] != null)
+            {
+                DataTable sqlDt = new DataTable("message");
+
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+                string sqlSelect = "SELECT a.firstName, a.lastName, m.MessageID, m.SenderID, m.ReceiverID, m.DateAndTime, m.Message from accounts as a, message as m where a.accountId = m.SenderID and ReceiverID = @userid;";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@userid", HttpUtility.UrlDecode(Session["id"].ToString()));
+
+
+                //gonna use this to fill a data table
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                //filling the data table
+                sqlDa.Fill(sqlDt);
+
+                //loop through each row in the dataset, creating instances
+                //of our container class Courses.  Fill each course with 
+                //data from the rows, then dump them in a list.
+                List<Message> Messages = new List<Message>();
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+                    //only share user id and pass info with admins!
+                    Messages.Add(new Message
+                    {
+                        senderName = sqlDt.Rows[i]["firstName"].ToString() + " " + sqlDt.Rows[i]["lastName"].ToString(),
+                        receiverID = Convert.ToInt32(sqlDt.Rows[i]["ReceiverID"]),
+                        msg = sqlDt.Rows[i]["message"].ToString(),
+                        date = sqlDt.Rows[i]["DateAndTime"].ToString()
+                    });
+                }
+                //convert the list of courses to an array and return!
+                return Messages.ToArray();
+            }
+            else
+            {
+                //if they're not logged in, return an empty array
+                return new Message[0];
+            }
+        }
+
     }
 }

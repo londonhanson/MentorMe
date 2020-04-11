@@ -404,6 +404,36 @@ function LoadCourses() {
 }
 
 
+function LoadMessage() {
+    var webMethod = "AccountServices.asmx/GetMessage";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            if (msg.d.length > 0) {
+                console.log(msg.d);
+                messageArray = msg.d;
+                $("#messageDisplay").empty();
+
+                for (var i = 0; i < messageArray.length; i++) {
+                    var message;
+                    message = "<tr><th scope = \"row\">" + messageArray[i].senderName + "</th ><td>" + messageArray[i].msg +
+                        "</td><td>" + messageArray[i].date + "</td><td>" +
+                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#ReplyMessage\">" + "Reply" + "</button>" + "</td></tr>"
+                    $("#messageDisplay").append(message);
+                }
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
+
 function search() {
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("searchbox");
