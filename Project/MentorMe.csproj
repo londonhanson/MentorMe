@@ -94,7 +94,9 @@
     <Content Include="index.html" />
     <Content Include="uploadbutton.aspx" />
     <Content Include="video\VideoFinal.mp4" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="AccountServices.js" />
     <Content Include="home.html" />
     <Content Include="SiteStyle.css" />
@@ -111,6 +113,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mentor.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="uploadbutton.aspx.cs">
       <DependentUpon>uploadbutton.aspx</DependentUpon>

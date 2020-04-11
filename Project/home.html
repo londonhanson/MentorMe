@@ -49,7 +49,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container col-lg-10" >
+    <div class="container col-lg-10">
         <div class="row">
             <div class="col-lg-3">
                 <aside class="user-info-wrapper">
@@ -66,20 +66,22 @@
                     </div>
                 </aside>
                 <nav class="list-group" id="menteeform">
-                    <a class="list-group-item with-badge active" href="#"><i class=" fa fa-th"></i>My Profile</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>My Classes</a>
-                    <a class="list-group-item" href="./FindCourses.html"><i class="fa fa-user"></i>Find A Class</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>Find A Mentor</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-map"></i>Messages</a>
+
+                    <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('mycalssesformMentee',this)"><i class="fa fa-user"></i>My Classes</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('findClassform', this); LoadCourses()"><i class="fa fa-user"></i>Find A Class</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('findMentorform', this); LoadMentor()"><i class="fa fa-user"></i>Find A Mentor</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('messageForm', this); LoadMessage()"><i class="fa fa-map"></i>Messages</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('Example',this)"><i class=" fa fa-th"></i>My Profile</a>
+
                 </nav>
                 <nav class="list-group" id="mentorform">
-                    <a class="list-group-item with-badge active" href="#"><i class=" fa fa-th"></i>My Profile</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>My Classes</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-map"></i>Messages</a>
+                    <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('mycalssesformMentor',this)"><i class="fa fa-user"></i>My Classes</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('messageForm', this); LoadMessage()"><i class="fa fa-map"></i>Messages</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('Example',this)"><i class=" fa fa-th"></i>My Profile</a>
                 </nav>
                 <nav class="list-group" id="adminform">
-                    <a class="list-group-item with-badge active" href="./ViewUserAccounts.html"><i class=" fa fa-th"></i>View All Users</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>View All Classes</a>
+                    <a class="list-group-item with-badge activesign active" href="./ViewUserAccounts.html" onclick="switchforms('videalluserform',this)"><i class=" fa fa-th"></i>View All Users</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('viewallclassform',this)"><i class="fa fa-user"></i>View All Classes</a>
                 </nav>
             </div>
 
@@ -142,13 +144,146 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
+            <!--my calsses form for mentee-->
+            <div class="col-lg-8" id="mycalssesformMentee">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th>My Classes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="classesMentee"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+            <!--messageForm-->
+            <div class="col-lg-8" id="messageForm">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th scope="col">From</th>
+                                <th scope="col">Message</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Reply</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messageDisplay"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+            <!--findClassform-->
+            <div class="col-lg-8" id="findClassform">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="row float-right input-group col-4">
+                    <input class="input-group" type="text" id="searchbox" onkeyup="search()" placeholder="Search for Coures Focus.." title="Type in a Coures Focus">
+                </div>
+                <div class="table">
+                    <table id="courseTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Course ID</th>
+                                <th scope="col">Mentor ID</th>
+                                <th scope="col">Course Name</th>
+                                <th scope="col">Course Description</th>
+                                <th scope="col">Course Focus</th>
+                                <th scope="col" style="width:120px">Join Class</th>
+                            </tr>
+                        </thead>
+                        <tbody id="classDisplay"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+            <!--findMentorform-->
+            <div class="col-lg-8" id="findMentorform">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mentor Name</th>
+                                <th scope="col">Mentor Area</th>
+                                <th scope="col">Send Message</th>
+                            </tr>
+                        </thead>
+                        <tbody id="findMentorDisplay"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+            <!--mycalssesformMentor-->
+            <div class="col-lg-8" id="mycalssesformMentor">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th>My Classes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mycalssesformMentorDisplay"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+            <!--viewallclassform-->
+            <div class="col-lg-8" id="viewallclassform">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                <!--Example Table-->
+                <div class="table">
+                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                        <thead>
+                            <tr>
+                                <th>View All Classes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allClassDisplay"></tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+
+
         </div>
     </div>
 
-    
+    <!--Send Message form-->
+    <div id="SendMessage" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center" id="MSGhead">Send Message</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="logInForm" onsubmit="SendMessage($('#messageBox').val()); return false;">
+                        <input type="hidden" name="_token" value="">
+                        <div class="form-group">
+                            <label class="control-label" id="receiverName">Message</label>
+                            <div>
+                                <textarea name="Message" id="messageBox" cols="50" rows="5" class="form-control col-12" placeholder="Type Message Here..."></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <button type="submit" class="btn btn-info btn-lg btn-block" style="display: block;" id="signbtnMSG">Send</button>
+                                <button class="btn btn-info btn-lg btn-block " style="display: none" id="spsignbtn">
+                                    <span class="spinner-border spinner-border-sm"></span>
+                                    Sending...
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
-
-
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 
 

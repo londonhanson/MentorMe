@@ -116,12 +116,24 @@ function LogOut() {
 }
 
 function MentorNav() {
+    // nav section
     var mode = document.getElementById("mode")
     var mentorform = document.getElementById('mentorform')
     var menteeform = document.getElementById('menteeform')
     var adminform = document.getElementById('adminform')
+
+    //table section(right section)
     var videalluserform = document.getElementById('videalluserform')
     var profileform = document.getElementById('Example')
+    var viewallclassform = document.getElementById('viewallclassform')
+    var mycalssesformMentor = document.getElementById('mycalssesformMentor')
+    var findMentorform = document.getElementById('findMentorform')
+    var findClassform = document.getElementById('findClassform')
+    var messageForm = document.getElementById('messageForm')
+    var mycalssesformMentee = document.getElementById('mycalssesformMentee')
+
+
+
 
     DisplayData();
     if (accountData["isAdmin"] === "True") {
@@ -130,26 +142,77 @@ function MentorNav() {
         adminform.style.display = 'block';
         menteeform.style.display = 'none';
         mentorform.style.display = 'none';
+        // right
         videalluserform.style.display = 'block';
+        viewallclassform.style.display = 'none';
+        mycalssesformMentor.style.display = 'none';
+        findMentorform.style.display = 'none';
         profileform.style.display = 'none';
+        findClassform.style.display = 'none';
+        messageForm.style.display = 'none';
+        mycalssesformMentee.style.display = 'none';
+
     }
     else {
         if (accountData["accountType"] === "Mentee") {
             menteeform.style.display = 'block';
             mentorform.style.display = 'none';
             adminform.style.display = 'none';
+            // right
             videalluserform.style.display = 'none';
-            profileform.style.display = 'block';
+            viewallclassform.style.display = 'none';
+            mycalssesformMentor.style.display = 'none';
+            findMentorform.style.display = 'none';
+            profileform.style.display = 'none';
+            findClassform.style.display = 'none';
+            messageForm.style.display = 'none';
+            mycalssesformMentee.style.display = 'block';
         }
         else {
             menteeform.style.display = 'none';
             mentorform.style.display = 'block';
             adminform.style.display = 'none';
+            // right
             videalluserform.style.display = 'none';
-            profileform.style.display = 'block';
+            viewallclassform.style.display = 'none';
+            mycalssesformMentor.style.display = 'block';
+            findMentorform.style.display = 'none';
+            profileform.style.display = 'none';
+            findClassform.style.display = 'none';
+            messageForm.style.display = 'none';
+            mycalssesformMentee.style.display = 'none';
         }
     }
 }
+
+
+function switchforms(formname, element) {
+    console.log(formname)
+    var formList = ["viewallclassform", "mycalssesformMentor", "findMentorform", "findClassform", "messageForm", "mycalssesformMentee", "Example", "videalluserform"]
+
+    formList.forEach(switchs)
+    //buttonActive.forEach(switch2)
+    function switchs(forms) {
+        
+        if (forms === formname) {
+            document.getElementById(forms).style.display = "block"
+            switch2()
+            element.classList.add("active");
+        }
+        else {
+            document.getElementById(forms).style.display = "none"
+        }
+    }
+
+    function switch2() {
+        var buttonActive = document.getElementsByClassName('activesign')
+        for (var i = 0; i < buttonActive.length; i++) {
+            buttonActive[i].classList.remove("active")
+        }
+        
+    }
+}
+
 
 var accountsArray;
 var currentId;
@@ -309,7 +372,9 @@ function LoadCourses() {
             if (msg.d.length > 0) {
                 console.log(msg.d);
                 coursesArray = msg.d;
+
                 $("#coursesBox").empty();
+
                 // sort the id
 
                 function compare(a, b) {
@@ -328,16 +393,137 @@ function LoadCourses() {
                     currentId = parseInt(coursesArray[i].courseId);
                     var course;
                     course = "<tr><th scope = \"row\">" + coursesArray[i].courseId + "</th ><td>" + coursesArray[i].mentorId +
-                        "</td><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" +
-                         coursesArray[i].courseFocus + "</td><td>" +
-                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#JoinCourse\">" + "Join" + "</button>" + "</td></tr>"
-
-                    $("#coursesBox").append(course);
+                    
+                        "</td><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
+                    "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#JoinCourse\">" + "Join" + "</button>" + "</td></tr>"
+                    $("#classDisplay").append(course);
                 }
             }
         },
         error: function (e) {
             alert("boo...");
+        }
+    });
+}
+
+
+function LoadMessage() {
+    var webMethod = "AccountServices.asmx/GetMessage";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            if (msg.d.length > 0) {
+                console.log(msg.d);
+                messageArray = msg.d;
+                $("#messageDisplay").empty();
+
+                for (var i = 0; i < messageArray.length; i++) {
+                    var message;
+                    message = "<tr><th scope = \"row\">" + messageArray[i].senderName + "</th ><td>" + messageArray[i].msg +
+                        "</td><td>" + messageArray[i].date + "</td><td>" +
+                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#SendMessage\" onclick = \"GetSender(" + messageArray[i].senderID + ", '" + messageArray[i].senderName + "')\">" + "Reply" + "</button>" + "</td></tr>"
+                    $("#messageDisplay").append(message);
+                }
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
+
+
+
+function LoadMentor() {
+    var webMethod = "AccountServices.asmx/GetMentor";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            if (msg.d.length > 0) {
+                console.log(msg.d);
+                mentorArray = msg.d;
+                $("#findMentorDisplay").empty();
+
+                for (var i = 0; i < mentorArray.length; i++) {
+                    var mentors;
+                    mentors = "<tr><th scope = \"row\">" + mentorArray[i].MentorName + "</th ><td>" + mentorArray[i].MentorArea +
+                        "</td><td>" + "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#SendMessage\" onclick = \"GetReceiver(" + mentorArray[i].MentorID + ", '" +  mentorArray[i].MentorName + "')\">" + "Send Message" + "</button>" + "</td></tr>"
+                    $("#findMentorDisplay").append(mentors);
+                }
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
+
+function search() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("searchbox");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("courseTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[3];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
+
+var receiver;
+function GetReceiver(targetID, name) {
+    var head = document.getElementById("MSGhead")
+    var lableName = document.getElementById("receiverName")
+    head.innerHTML = "Send Message"
+    lableName.innerHTML = "Message to " + name
+    receiver = targetID;
+    console.log(receiver)
+}
+
+
+function GetSender(senderID, senderName) {
+    var head = document.getElementById("MSGhead")
+    var lableName = document.getElementById("receiverName")
+    head.innerHTML = "Reply Message"
+    lableName.innerHTML = "Reply to " + senderName
+    receiver = senderID;
+}
+
+function SendMessage(msg) {
+    var webMethod = "AccountServices.asmx/SendMessage";
+    var parameters = "{\"targetID\":\"" + encodeURI(receiver) +
+        "\", \"msg\":\"" + encodeURI(msg) + "\"}";
+
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (msg) {
+            alert("Message Sent! ");
+        },
+        error: function (e) {
+            alert("Failed to Send the Message. Try again.");
         }
     });
 }
