@@ -160,6 +160,7 @@ function MentorNav() {
     }
     else {
         if (accountData["accountType"] === "Mentee") {
+
             menteeform.style.display = 'block';
             mentorform.style.display = 'none';
             adminform.style.display = 'none';
@@ -174,6 +175,7 @@ function MentorNav() {
             mycalssesformMentee.style.display = 'block';
         }
         else {
+            LoadCoursesForMentor();
             menteeform.style.display = 'none';
             mentorform.style.display = 'block';
             adminform.style.display = 'none';
@@ -403,6 +405,43 @@ function LoadCourses() {
                     "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#JoinCourse\">" + "Join" + "</button>" + "</td></tr>"
                     $("#classDisplay").append(course);
                 }
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
+
+function LoadCoursesForMentor() {
+    console.log("running")
+    var webMethod = "AccountServices.asmx/GetCourseForMentor";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            coursesArray = msg.d;
+            if (msg.d.length > 0) {
+
+                $("#mycalssesformMentorDisplay").empty();
+                var course;
+                for (var i = 0; i < coursesArray.length; i++) {
+                    currentId = parseInt(coursesArray[i].courseId);
+                    
+                    var num = i + 1;
+                    course = "<tr><th scope = \"row\">" + num + "</th ><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
+                        "<button type=\"button\" class=\"btn btn-info \">" + "Select" + "</button>" + "</td></tr>"
+                    $("#mycalssesformMentorDisplay").append(course);
+                }
+            }
+            else {
+                document.getElementById("ClassTableMentor").style.display = "none";
+                course = "<p class=\"text-center font-weight-bold\" style=\"font-size:20px;\">You Don't Have A Class. Please Start A New Class!</p>"
+                $("#coursePlace").append(course);
             }
         },
         error: function (e) {
