@@ -378,7 +378,7 @@ function LoadCourses() {
                 console.log(msg.d);
                 coursesArray = msg.d;
 
-                $("#coursesBox").empty();
+                $("#classDisplay").empty();
 
                 // sort the id
 
