@@ -96,7 +96,7 @@ namespace accountmanager
         }
 
         [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
-        public void SignUp(string email, string password, string firstName, string lastName, string accountType)
+        public string SignUp(string email, string password, string firstName, string lastName, string accountType)
         {
             //our connection string comes from our web.config file like we talked about earlier
             string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
@@ -117,17 +117,19 @@ namespace accountmanager
             sqlCommand.Parameters.AddWithValue("@accountTypeValue", HttpUtility.UrlDecode(accountType));
 
             sqlConnection.Open();
-
+            string except = "";
             try
             {
-                int accountID = Convert.ToInt32(sqlCommand.ExecuteScalar());
+                sqlCommand.ExecuteNonQuery();
             }
-            catch (Exception)
-            {
-
+            catch (Exception e)
+            { 
+                except = e.Message.ToString();
+                except = except.Substring(0, 9);
             }
             sqlConnection.Close();
             //return the result!
+            return except;
         }
 
         [WebMethod(EnableSession = true)]

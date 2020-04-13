@@ -39,6 +39,7 @@ function LogIn(email, pass) {
                 console.log(msg.d)
                 account = JSON.parse(msg.d);
                 console.log(account)
+
             }
             if (account["email"] === email) {
                 window.localStorage.setItem("account", msg.d);
@@ -78,10 +79,14 @@ function SignUp(email, password, firstName, lastName, accountType) {
     contentType: "application/json; charset=utf-8",
     dataType: "json",
 
-   success: function (msg) {
-        alert("Account created, you can now login.");
-
-        location.href = "index.html"
+        success: function (msg) {
+            if (msg.d === "Duplicate") {
+                alert("An account with this email already exists. Please Try again.")
+            }
+            else {
+            alert("Account created, you can now login.");
+                location.href = "index.html"
+            }
          },
     error: function (e) {
     alert("Failed to create an account. Try again.");
