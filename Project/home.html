@@ -117,6 +117,22 @@
                                         <label for="Bio" class="sr-only py-5">Bio</label>
                                         <textarea name="Bio" id="Bio" cols="40" rows="5" class="form-control col-10" placeholder="Bio"></textarea>
                                     </div>
+                                    <div class="row" style="margin-top:30px;">
+                                        <h5 class=" profileform col-2 align-baseline">My Area: </h5>
+                                        <select class="custom-select col-10" id="areaProfile" required>
+                                            <option selected disabled>Select Area Focus</option>
+                                            <option value="Marketing">Marketing</option>
+                                            <option value="Leadership">Leadership</option>
+                                            <option value="Computer Science">Computer Science</option>
+                                            <option value="Finance">Finance</option>
+                                            <option value="Presentation">Presentation</option>
+                                            <option value="Accounting">Accounting</option>
+                                            <option value="Management">Management</option>
+                                            <option value="Development">Development</option>
+                                            <option value="Music">Music</option>
+                                            <option value="Computer Gaming">Computer Gaming</option>
+                                        </select>
+                                    </div>
                                     <div class="row float-right"><button type="button" class="btn btn-primary button-control" onclick="update()">Save My Profile</button></div>
                                 </td>
                         </tbody>
@@ -189,7 +205,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">Course ID</th>
-                                <th scope="col">Mentor ID</th>
+                                <th scope="col">Mentor Name</th>
                                 <th scope="col">Course Name</th>
                                 <th scope="col">Course Description</th>
                                 <th scope="col">Course Focus</th>

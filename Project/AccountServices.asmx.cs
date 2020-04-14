@@ -255,13 +255,13 @@ namespace accountmanager
         }
 
         [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
-        public void updateProfile(string email, string bio, string id)
+        public void updateProfile(string email, string bio, string id, string area)
         {
             //our connection string comes from our web.config file like we talked about earlier
             string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
             //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
             //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
-            string sqlAddAcct = "UPDATE accounts SET email = @email, bio = @bio WHERE accountId=@accountIdValue";
+            string sqlAddAcct = "UPDATE accounts SET email = @email, bio = @bio,areaOfFocus = @area  WHERE accountId=@accountIdValue";
             //"SELECT userName, password FROM accounts WHERE userName=@idValue and password=@passValue";
             MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
             MySqlCommand sqlCommand = new MySqlCommand(sqlAddAcct, sqlConnection);
@@ -271,6 +271,7 @@ namespace accountmanager
             //for transmission (funky characters escaped, mostly)
             sqlCommand.Parameters.AddWithValue("@email", HttpUtility.UrlDecode(email));
             sqlCommand.Parameters.AddWithValue("@bio", HttpUtility.UrlDecode(bio));
+            sqlCommand.Parameters.AddWithValue("@area", HttpUtility.UrlDecode(area));
             sqlCommand.Parameters.AddWithValue("@accountIdValue", HttpUtility.UrlDecode(id));
 
             sqlConnection.Open();
@@ -298,7 +299,7 @@ namespace accountmanager
                 DataTable sqlDt = new DataTable("courses");
 
                 string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
-                string sqlSelect = "select classId, mentorId, className, classDescription, classFocus from classes order by classId";
+                string sqlSelect = "SELECT a.firstName, a.lastName, c.classId, c.mentorId, c.className, c.classDescription, c.classFocus from accounts as a, classes as c where a.accountId = c.mentorId;";
 
                 MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -319,6 +320,7 @@ namespace accountmanager
                     {
                         courseId = Convert.ToInt32(sqlDt.Rows[i]["classId"]),
                         mentorId = Convert.ToInt32(sqlDt.Rows[i]["mentorId"]),
+                        mentorName = sqlDt.Rows[i]["firstName"].ToString() + " " + sqlDt.Rows[i]["lastName"].ToString(),
                         courseName = sqlDt.Rows[i]["className"].ToString(),
                         courseDesc = sqlDt.Rows[i]["classDescription"].ToString(),
                         courseFocus = sqlDt.Rows[i]["classFocus"].ToString()
@@ -367,6 +369,7 @@ namespace accountmanager
                     {
                         courseId = Convert.ToInt32(sqlDt.Rows[i]["classId"]),
                         mentorId = Convert.ToInt32(sqlDt.Rows[i]["mentorID"]),
+                        mentorName = sqlDt.Rows[i]["mentorID"].ToString(),
                         courseName = sqlDt.Rows[i]["className"].ToString(),
                         courseDesc = sqlDt.Rows[i]["classDescription"].ToString(),
                         courseFocus = sqlDt.Rows[i]["classFocus"].ToString()

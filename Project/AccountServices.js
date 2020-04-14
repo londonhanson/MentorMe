@@ -344,10 +344,12 @@ function EditAccount(email, password, firstName, lastName, areaOfFocus, accountT
 function update() {
     var email = document.getElementById("inputEmail").value
     var bio = document.getElementById("Bio").value
+    var area = document.getElementById("areaProfile").value
     var webMethod = "AccountServices.asmx/updateProfile";
     var parameters = "{\"email\":\"" + encodeURI(email) +
         "\", \"bio\":\"" + encodeURI(bio) +
-        "\",\"id\":\"" + encodeURI(accountData['id']) + "\"}";
+        "\",\"id\":\"" + encodeURI(accountData['id']) +
+        "\", \"area\":\"" + encodeURI(area) +"\"}";
 
     $.ajax({
         type: "POST",
@@ -399,7 +401,7 @@ function LoadCourses() {
                 for (var i = 0; i < coursesArray.length; i++) {
                     currentId = parseInt(coursesArray[i].courseId);
                     var course;
-                    course = "<tr><th scope = \"row\">" + coursesArray[i].courseId + "</th ><td>" + coursesArray[i].mentorId +
+                    course = "<tr><th scope = \"row\">" + coursesArray[i].courseId + "</th ><td>" + coursesArray[i].mentorName +
                     
                         "</td><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
                     "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#JoinCourse\">" + "Join" + "</button>" + "</td></tr>"
