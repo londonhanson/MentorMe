@@ -444,6 +444,7 @@ function LoadCourses() {
                         "</td><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
                     "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#JoinCourse\">" + "Join" + "</button>" + "</td></tr>"
                     $("#classDisplay").append(course);
+                    $("#allClassDisplay").append(course);
                 }
             }
         },

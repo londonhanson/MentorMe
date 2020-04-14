@@ -80,8 +80,8 @@
                     <a class="list-group-item activesign" href="#" onclick="switchforms('Example',this)"><i class=" fa fa-th"></i>My Profile</a>
                 </nav>
                 <nav class="list-group" id="adminform">
-                    <a class="list-group-item with-badge activesign active" href="./ViewUserAccounts.html" onclick="switchforms('videalluserform',this)"><i class=" fa fa-th"></i>View All Users</a>
-                    <a class="list-group-item activesign" href="#" onclick="switchforms('viewallclassform',this)"><i class="fa fa-user"></i>View All Classes</a>
+                    <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('videalluserform',this)"><i class=" fa fa-th"></i>View All Users</a>
+                    <a class="list-group-item activesign" href="#" onclick="switchforms('viewallclassform', this); LoadCourses()"><i class="fa fa-user"></i>View All Classes</a>
                 </nav>
             </div>
 
@@ -329,6 +329,11 @@
                         <thead>
                             <tr>
                                 <th>View All Classes</th>
+                                <th>Mentor</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Focus</th>
+                                <th>Zoom Link</th>
                             </tr>
                         </thead>
                         <tbody id="allClassDisplay"></tbody>
