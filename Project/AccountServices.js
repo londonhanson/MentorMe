@@ -136,6 +136,7 @@ function MentorNav() {
     var findClassform = document.getElementById('findClassform')
     var messageForm = document.getElementById('messageForm')
     var mycalssesformMentee = document.getElementById('mycalssesformMentee')
+    var classmentoredit = document.getElementById('classRoom')
 
 
 
@@ -147,6 +148,7 @@ function MentorNav() {
         adminform.style.display = 'block';
         menteeform.style.display = 'none';
         mentorform.style.display = 'none';
+        
         // right
         videalluserform.style.display = 'block';
         viewallclassform.style.display = 'none';
@@ -156,6 +158,7 @@ function MentorNav() {
         findClassform.style.display = 'none';
         messageForm.style.display = 'none';
         mycalssesformMentee.style.display = 'none';
+        classmentoredit.style.display = 'none';
 
     }
     else {
@@ -173,9 +176,10 @@ function MentorNav() {
             findClassform.style.display = 'none';
             messageForm.style.display = 'none';
             mycalssesformMentee.style.display = 'block';
+            classmentoredit.style.display = 'none';
         }
         else {
-            LoadCoursesForMentor();
+            LoadCoursesForMentor(0);
             menteeform.style.display = 'none';
             mentorform.style.display = 'block';
             adminform.style.display = 'none';
@@ -188,6 +192,7 @@ function MentorNav() {
             findClassform.style.display = 'none';
             messageForm.style.display = 'none';
             mycalssesformMentee.style.display = 'none';
+            classmentoredit.style.display = 'none';
         }
     }
 }
@@ -195,7 +200,7 @@ function MentorNav() {
 
 function switchforms(formname, element) {
     console.log(formname)
-    var formList = ["viewallclassform", "mycalssesformMentor", "findMentorform", "findClassform", "messageForm", "mycalssesformMentee", "Example", "videalluserform"]
+    var formList = ["classRoom", "viewallclassform", "mycalssesformMentor", "findMentorform", "findClassform", "messageForm", "mycalssesformMentee", "Example", "videalluserform"]
 
     formList.forEach(switchs)
     //buttonActive.forEach(switch2)
@@ -203,8 +208,10 @@ function switchforms(formname, element) {
         
         if (forms === formname) {
             document.getElementById(forms).style.display = "block"
-            switch2()
-            element.classList.add("active");
+            if (forms != "classRoom") {
+                switch2()
+                element.classList.add("active");
+            }
         }
         else {
             document.getElementById(forms).style.display = "none"
@@ -233,6 +240,7 @@ function DisplayData() {
     if (!accountData["bio"] == null || !accountData["bio"] == "") {
         document.getElementById("bioField").innerHTML = accountData["bio"];
         document.getElementById('Bio').value = accountData["bio"];
+
     }
 
     // profile form info display 
@@ -242,7 +250,8 @@ function DisplayData() {
     lastName.innerHTML = accountData["lastName"]
     var emailAddress = document.getElementById('inputEmail')
     emailAddress.value = accountData['email']
-    
+    var areaProfile = document.getElementById("areaProfile")
+    areaProfile.value = accountData['areaOfFocus']
 }
 
 function LoadAccounts() {
@@ -369,6 +378,35 @@ function update() {
     });
 }
 
+function updateClass(id) {
+    var className = document.getElementById("CName").value
+    var ClassDes = document.getElementById("inputDescription").value
+    var classID = id
+    var ClassArea = document.getElementById("areaClass1").value
+    var webMethod = "AccountServices.asmx/updateClass";
+    var parameters = "{\"className\":\"" + encodeURI(className) +
+        "\", \"ClassDes\":\"" + encodeURI(ClassDes) +
+        "\",\"ClassArea\":\"" + encodeURI(ClassArea) +
+        "\", \"classID\":\"" + encodeURI(classID) + "\"}";
+
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (msg) {
+            alert("Class Saved!");
+
+            location.href = "home.html"
+        },
+        error: function (e) {
+            alert("Failed to save your Class. Try again.");
+        }
+    });
+}
+
 function LoadCourses() {
     var webMethod = "AccountServices.asmx/GetCourses";
     $.ajax({
@@ -415,13 +453,41 @@ function LoadCourses() {
     });
 }
 
-
-function LoadCoursesForMentor() {
-    console.log("running")
+function LoadCoursesDetial(classNumber) {
     var webMethod = "AccountServices.asmx/GetCourseForMentor";
+    var parameters = "{\"classid\":\"" + encodeURI(classNumber) + "\"}";
     $.ajax({
         type: "POST",
         url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            if (msg.d.length > 0) {
+                console.log(msg.d);
+                coursesArray = msg.d;
+
+                document.getElementById("CName").value = coursesArray[0].courseName;
+                document.getElementById("inputDescription").innerHTML = coursesArray[0].courseDesc;
+                document.getElementById("areaClass").value = coursesArray[0].courseFocus;
+                document.getElementById("saveclas").setAttribute("onclick", "updateClass(" + coursesArray[0].courseId + ")")
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
+function LoadCoursesForMentor(id) {
+    console.log("running")
+    var webMethod = "AccountServices.asmx/GetCourseForMentor";
+    var parameters = "{\"classid\":\"" + encodeURI(id)+ "\"}";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (msg) {
@@ -435,8 +501,10 @@ function LoadCoursesForMentor() {
                     currentId = parseInt(coursesArray[i].courseId);
                     
                     var num = i + 1;
-                    course = "<tr><th scope = \"row\">" + num + "</th ><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
-                        "<button type=\"button\" class=\"btn btn-info \">" + "Select" + "</button>" + "</td></tr>"
+                    course = "<tr><th scope = \"row\">" + num + "</th ><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" + 
+                        "<button type=\"button\" class=\"btn btn-warning\">" + "Mentees" + "</button>" + "</td><td>" +
+                        "<button type=\"button\" class=\"btn btn-success \">" + "Zoom/Drive" + "</button>" + "</td><td>"+
+                        "<button type=\"button\" class=\"btn btn-info \" onclick = \"switchforms('classRoom', this); LoadCoursesDetial(" + coursesArray[i].courseId + ")"+ "\">" + "Edit" + "</button>" + "</td></tr>"
                     $("#mycalssesformMentorDisplay").append(course);
                 }
             }
@@ -451,6 +519,7 @@ function LoadCoursesForMentor() {
         }
     });
 }
+
 
 
 function LoadMessage() {
@@ -573,3 +642,29 @@ function SendMessage(msg) {
         }
     });
 }
+
+function StartNewClass(className, classDescription, classFocus, zoomLink, GoogleDrive) {
+    var webMethod = "AccountServices.asmx/StartNewClass";
+    console.log(classFocus)
+    var parameters = "{\"className\":\"" + encodeURI(className) +
+        "\",\"classDescription\":\"" + encodeURI(classDescription) +
+        "\",\"classFocus\":\"" + encodeURI(classFocus) +
+        "\",\"zoomLink\":\"" + encodeURI(zoomLink) +
+        "\", \"GoogleDrive\":\"" + encodeURI(GoogleDrive) + "\"}";
+
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (msg) {
+            alert("Class Created! View The Class In My Classes Tab!");
+        },
+        error: function (e) {
+            alert("Failed Create a class. Try again.");
+        }
+    });
+}
+

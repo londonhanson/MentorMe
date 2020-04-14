@@ -75,7 +75,7 @@
 
                 </nav>
                 <nav class="list-group" id="mentorform">
-                    <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('mycalssesformMentor',this)"><i class="fa fa-user"></i>My Classes</a>
+                    <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('mycalssesformMentor', this)"><i class="fa fa-user"></i>My Classes</a>
                     <a class="list-group-item activesign" href="#" onclick="switchforms('messageForm', this); LoadMessage()"><i class="fa fa-map"></i>Messages</a>
                     <a class="list-group-item activesign" href="#" onclick="switchforms('Example',this)"><i class=" fa fa-th"></i>My Profile</a>
                 </nav>
@@ -140,6 +140,55 @@
                 </div><!--Table end-->
             </div><!--Form end-->
 
+            <!--Edit Class room & view all mentee in class room-->
+            <div class="col-lg-9" id="classRoom">
+                <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+                
+                <div class="table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th id="classroomName">My Class Room: </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <h5 class="profileform col-2 align-baseline">Class Name: </h5>
+                                        <label for="className" class="sr-only ">Class Name</label>
+                                        <input type="text" id="CName" class="form-control col-5" placeholder="Class Name" required="">
+                                    </div>
+                                    <div class="row">
+                                        <h5 class=" profileform col-2 align-baseline">My Class Description: </h5>
+                                        <label for="inputDescription" class="sr-only ">Description</label>
+                                        <textarea name="inputDescription" id="inputDescription" cols="40" rows="5" class="form-control col-10" placeholder="Description" required></textarea>
+                                    </div>
+                                    <div class="row" style="margin-top:30px;">
+                                        <h5 class=" profileform col-2 align-baseline">Class Focus: </h5>
+                                        <select class="custom-select col-10" id="areaClass1" required>
+                                            <option selected disabled>Select Area Focus</option>
+                                            <option value="Marketing">Marketing</option>
+                                            <option value="Leadership">Leadership</option>
+                                            <option value="Computer Science">Computer Science</option>
+                                            <option value="Finance">Finance</option>
+                                            <option value="Presentation">Presentation</option>
+                                            <option value="Accounting">Accounting</option>
+                                            <option value="Management">Management</option>
+                                            <option value="Development">Development</option>
+                                            <option value="Music">Music</option>
+                                            <option value="Computer Gaming">Computer Gaming</option>
+                                        </select>
+                                    </div>
+                                   
+                                    
+                                    <div class="row float-right"><button type="button" class="btn btn-primary button-control" id="saveclas">Save My Class</button></div>
+                                </td>
+                        </tbody>
+                    </table>
+                </div><!--Table end-->
+            </div><!--Form end-->
+
             <div class="col-lg-8" id="videalluserform">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
                 <!--Example Table-->
@@ -160,6 +209,8 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
+
+
             <!--my calsses form for mentee-->
             <div class="col-lg-8" id="mycalssesformMentee">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -175,6 +226,8 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
+
+
             <!--messageForm-->
             <div class="col-lg-8" id="messageForm">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -193,6 +246,8 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
+
+
             <!--findClassform-->
             <div class="col-lg-8" id="findClassform">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -216,6 +271,8 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
+
+
             <!--findMentorform-->
             <div class="col-lg-8" id="findMentorform">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -233,8 +290,10 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
+
+
             <!--mycalssesformMentor-->
-            <div class="col-lg-8" id="mycalssesformMentor">
+            <div class="col-lg-9" id="mycalssesformMentor">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
                 <!--Example Table-->
                 <div class="table" id="coursePlace">
@@ -244,19 +303,23 @@
                                 <th scope="col"> </th>
                                 <th scope="col">Class Name</th>
                                 <th scope="col">Class About</th>
-                                <th scope="col">Class Focus Area</th>
-                                <th scope="col">Select Class</th>
+                                <th scope="col">Focus Area</th>
+                                <th scope="col">Mentees</th>
+                                <th scope="col">Action</th>
+                                <th scope="col">Edit</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody id="mycalssesformMentorDisplay"></tbody>
                     </table>
                 </div><!--Table end-->
                 <hr />
-                <div class="row  justify-content-center" >
-                    <button type="button" class="btn btn-primary btn-lg btn-block col-9" >Start A New Class</button>
+                <div class="row  justify-content-center">
+                    <button type="button" class="btn btn-primary btn-lg btn-block col-9" data-toggle="modal" data-target="#startNewClass">Start A New Class</button>
                 </div>
             </div><!--Form end-->
+
+
             <!--viewallclassform-->
             <div class="col-lg-8" id="viewallclassform">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -311,6 +374,75 @@
     </div><!-- /.modal -->
 
 
+
+    <!--New Class pupup form-->
+    <div id="startNewClass" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="h4 modal-title text-center">Start New Class</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" onsubmit="StartNewClass($('#ClassName').val(), $('#classDescription').val(), $('#areaClass').val() , $('#Zoomlink').val(), $('#GoogleDriveLink').val()); return false;">
+                        <input type="hidden" name="_token" value="">
+                        <div class="form-group">
+                            <label class="control-label">Class Name</label>
+                            <div>
+                                <input id="ClassName" type="text" class="form-control input-lg" name="ClassName" value="" required="" autofocus="">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label">Zoom Link</label>
+                            <div>
+                                <input type="text" id="Zoomlink" class="form-control input-lg" name="Zoomlink">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Google Drive Link</label>
+                            <div>
+                                <input type="text" id="GoogleDriveLink" class="form-control input-lg" name="GoogleDriveLink">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Class Area</label>
+                            <select class="custom-select form-control" id="areaClass" required>
+                                <option selected disabled>Select Class Area Focus</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Leadership">Leadership</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Presentation">Presentation</option>
+                                <option value="Accounting">Accounting</option>
+                                <option value="Management">Management</option>
+                                <option value="Development">Development</option>
+                                <option value="Music">Music</option>
+                                <option value="Computer Gaming">Computer Gaming</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label">Class Description</label>
+                            <div>
+                                <textarea name="classDescription" id="classDescription" cols="50" rows="3" class="form-control col-12" placeholder="Type Class Description Here..." required></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div>
+                                <button type="submit" class="btn btn-info btn-block">START</button>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <footer class="fixed-bottom">
         <div class="footer-copyright text-center py-3 text-white-50">&copy; 2020 Copyright: MentorMe</div>

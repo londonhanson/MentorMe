@@ -288,6 +288,40 @@ namespace accountmanager
             //return the result!
         }
 
+        [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
+        public void updateClass(string className, string ClassDes, string ClassArea, string classID)
+        {
+            //our connection string comes from our web.config file like we talked about earlier
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+            //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
+            //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
+            string sqlAddAcct = "UPDATE classes SET className = @className, classDescription = @ClassDes, classFocus = @ClassArea  WHERE classId=@classID";
+            //"SELECT userName, password FROM accounts WHERE userName=@idValue and password=@passValue";
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlAddAcct, sqlConnection);
+
+            //tell our command to replace the @parameters with real values
+            //we decode them because they came to us via the web so they were encoded
+            //for transmission (funky characters escaped, mostly)
+            sqlCommand.Parameters.AddWithValue("@className", HttpUtility.UrlDecode(className));
+            sqlCommand.Parameters.AddWithValue("@ClassDes", HttpUtility.UrlDecode(ClassDes));
+            sqlCommand.Parameters.AddWithValue("@ClassArea", HttpUtility.UrlDecode(ClassArea));
+            sqlCommand.Parameters.AddWithValue("@classID", HttpUtility.UrlDecode(classID));
+
+            sqlConnection.Open();
+
+            try
+            {
+                int accountID = Convert.ToInt32(sqlCommand.ExecuteScalar());
+            }
+            catch (Exception)
+            {
+
+            }
+            sqlConnection.Close();
+            //return the result!
+        }
+
         [WebMethod(EnableSession = true)]
         public Course[] GetCourses()
         {
@@ -337,22 +371,32 @@ namespace accountmanager
         }
 
         [WebMethod(EnableSession = true)]
-        public Course[] GetCourseForMentor()
+        public Course[] GetCourseForMentor(int classid)
         {
             //GetCourses will display all courses to mentees when trying to join a new course
 
             //WE ONLY SHARE CLASSES WITH LOGGED IN USERS!
             if (Session["id"] != null)
             {
+                
                 DataTable sqlDt = new DataTable("courses");
 
                 string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
-                string sqlSelect = "select classId, mentorID,className, classDescription, classFocus from classes where mentorId = @mentorID";
+                string sqlSelect;
+                if (classid != 0)
+                {
+                    sqlSelect = "select classId, mentorID,className, classDescription, classFocus from classes where classId = @classId";
+                }
+                else
+                {
+                    sqlSelect = "select classId, mentorID,className, classDescription, classFocus from classes where mentorId = @mentorID";
+                }
 
                 MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
 
                 sqlCommand.Parameters.AddWithValue("@mentorID", HttpUtility.UrlDecode(Session["id"].ToString()));
+                sqlCommand.Parameters.AddWithValue("@classId", HttpUtility.UrlDecode(classid.ToString()));
                 //gonna use this to fill a data table
                 MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
                 //filling the data table
@@ -520,6 +564,44 @@ namespace accountmanager
             //return the result!
         }
 
+
+        [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
+        public string StartNewClass(string className, string classDescription, string classFocus, string zoomLink="", string GoogleDrive="")
+        {
+            //our connection string comes from our web.config file like we talked about earlier
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+            //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
+            //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
+            string sqlAddAcct = "INSERT INTO classes(mentorId, className, classDescription, classFocus, zoomLink, GoogleDrive) VALUES(@mentorId, @className, @classDescription, @classFocus, @zoomLink, @GoogleDrive)";
+            //"SELECT userName, password FROM accounts WHERE userName=@idValue and password=@passValue";
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlAddAcct, sqlConnection);
+
+            //tell our command to replace the @parameters with real values
+            //we decode them because they came to us via the web so they were encoded
+            //for transmission (funky characters escaped, mostly)
+            sqlCommand.Parameters.AddWithValue("@mentorId", HttpUtility.UrlDecode(Session["id"].ToString()));
+            sqlCommand.Parameters.AddWithValue("@className", HttpUtility.UrlDecode(className));
+            sqlCommand.Parameters.AddWithValue("@classDescription", HttpUtility.UrlDecode(classDescription));
+            sqlCommand.Parameters.AddWithValue("@classFocus", HttpUtility.UrlDecode(classFocus));
+            sqlCommand.Parameters.AddWithValue("@zoomLink", HttpUtility.UrlDecode(zoomLink));
+            sqlCommand.Parameters.AddWithValue("@GoogleDrive", HttpUtility.UrlDecode(GoogleDrive));
+
+            sqlConnection.Open();
+            string except = "";
+            try
+            {
+                sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                except = e.Message.ToString();
+                except = except.Substring(0, 9);
+            }
+            sqlConnection.Close();
+            //return the result!
+            return except;
+        }
 
     }
 }
