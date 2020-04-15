@@ -312,3 +312,21 @@ body {
     border: 1px solid #ddd;
     margin-bottom: 12px;
 }
+
+
+.linkContainer {
+    margin: 0px;
+    padding: 20px;
+    transition: 0s background-color;
+    transition-duration: 0.15s, 0.15s, 0.15s, 0.15s;
+    transition-timing-function: ease-in-out,ease-in-out,ease-in-out,ease-in-out;
+}
+
+.linkContainer:hover {
+    background-color: #28a745;
+    transition-delay: 0.1s;
+}
+
+
+
+

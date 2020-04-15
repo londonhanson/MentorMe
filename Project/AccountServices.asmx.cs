@@ -289,13 +289,13 @@ namespace accountmanager
         }
 
         [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
-        public void updateClass(string className, string ClassDes, string ClassArea, string classID)
+        public void updateClass(string className, string ClassDes, string ClassArea, string zoom, string drive, string classID)
         {
             //our connection string comes from our web.config file like we talked about earlier
             string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
             //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
             //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
-            string sqlAddAcct = "UPDATE classes SET className = @className, classDescription = @ClassDes, classFocus = @ClassArea  WHERE classId=@classID";
+            string sqlAddAcct = "UPDATE classes SET className = @className, classDescription = @ClassDes, classFocus = @ClassArea , zoomLink = @zoom, GoogleDrive = @drive WHERE classId=@classID";
             //"SELECT userName, password FROM accounts WHERE userName=@idValue and password=@passValue";
             MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
             MySqlCommand sqlCommand = new MySqlCommand(sqlAddAcct, sqlConnection);
@@ -307,6 +307,8 @@ namespace accountmanager
             sqlCommand.Parameters.AddWithValue("@ClassDes", HttpUtility.UrlDecode(ClassDes));
             sqlCommand.Parameters.AddWithValue("@ClassArea", HttpUtility.UrlDecode(ClassArea));
             sqlCommand.Parameters.AddWithValue("@classID", HttpUtility.UrlDecode(classID));
+            sqlCommand.Parameters.AddWithValue("@zoom", HttpUtility.UrlDecode(zoom));
+            sqlCommand.Parameters.AddWithValue("@drive", HttpUtility.UrlDecode(drive));
 
             sqlConnection.Open();
 
@@ -385,11 +387,11 @@ namespace accountmanager
                 string sqlSelect;
                 if (classid != 0)
                 {
-                    sqlSelect = "select classId, mentorID,className, classDescription, classFocus from classes where classId = @classId";
+                    sqlSelect = "select classId, mentorID,className, classDescription, classFocus, zoomLink, GoogleDrive from classes where classId = @classId";
                 }
                 else
                 {
-                    sqlSelect = "select classId, mentorID,className, classDescription, classFocus from classes where mentorId = @mentorID";
+                    sqlSelect = "select classId, mentorID,className, classDescription, classFocus, zoomLink, GoogleDrive from classes where mentorId = @mentorID";
                 }
 
                 MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
@@ -414,6 +416,8 @@ namespace accountmanager
                         courseId = Convert.ToInt32(sqlDt.Rows[i]["classId"]),
                         mentorId = Convert.ToInt32(sqlDt.Rows[i]["mentorID"]),
                         mentorName = sqlDt.Rows[i]["mentorID"].ToString(),
+                        zoom = sqlDt.Rows[i]["zoomLink"].ToString(),
+                        drive = sqlDt.Rows[i]["GoogleDrive"].ToString(),
                         courseName = sqlDt.Rows[i]["className"].ToString(),
                         courseDesc = sqlDt.Rows[i]["classDescription"].ToString(),
                         courseFocus = sqlDt.Rows[i]["classFocus"].ToString()
@@ -480,6 +484,46 @@ namespace accountmanager
                 //if they're not logged in, return an empty array
                 return new Message[0];
             }
+        }
+
+        [WebMethod(EnableSession = true)]
+        public List<string> GetLinks(int id)
+        {
+            //GetMesage will dispaly the message loged accound received. 
+            List<string> Links = new List<string>();
+            //WE ONLY SHARE Message WITH LOGGED IN USERS!
+            if (Session["id"] != null)
+            {
+                DataTable sqlDt = new DataTable("message");
+
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+                string sqlSelect = "SELECT zoomLink, GoogleDrive from classes where classId = @id";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@id", HttpUtility.UrlDecode(id.ToString()));
+
+
+                //gonna use this to fill a data table
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                //filling the data table
+                sqlDa.Fill(sqlDt);
+
+                //loop through each row in the dataset, creating instances
+                //of our container class Courses.  Fill each course with 
+                //data from the rows, then dump them in a list.
+                
+
+                //only share user id and pass info with admins!
+                Links.Add(sqlDt.Rows[0]["zoomLink"].ToString());
+                Links.Add(sqlDt.Rows[0]["GoogleDrive"].ToString());
+
+
+                //convert the list of courses to an array and return!
+                
+            }
+            return Links;
         }
 
         [WebMethod(EnableSession = true)]

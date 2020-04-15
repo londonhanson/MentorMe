@@ -139,11 +139,10 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
-
             <!--Edit Class room & view all mentee in class room-->
             <div class="col-lg-9" id="classRoom">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
-                
+
                 <div class="table">
                     <table class="table">
                         <thead>
@@ -156,8 +155,18 @@
                                 <td>
                                     <div class="row">
                                         <h5 class="profileform col-2 align-baseline">Class Name: </h5>
-                                        <label for="className" class="sr-only ">Class Name</label>
+                                        <label for="CName" class="sr-only ">Class Name</label>
                                         <input type="text" id="CName" class="form-control col-5" placeholder="Class Name" required="">
+                                    </div>
+                                    <div class="row">
+                                        <h5 class="profileform col-2 align-baseline">Zoom Link: </h5>
+                                        <label for="ZLink" class="sr-only ">Zoom Link</label>
+                                        <input type="text" id="ZLink" class="form-control col-5" placeholder="Zoom Link" required="">
+                                    </div>
+                                    <div class="row">
+                                        <h5 class="profileform col-2 align-baseline">Google Drive: </h5>
+                                        <label for="GLink" class="sr-only ">Google Drive</label>
+                                        <input type="text" id="GLink" class="form-control col-5" placeholder="Google Drive" required="">
                                     </div>
                                     <div class="row">
                                         <h5 class=" profileform col-2 align-baseline">My Class Description: </h5>
@@ -180,8 +189,8 @@
                                             <option value="Computer Gaming">Computer Gaming</option>
                                         </select>
                                     </div>
-                                   
-                                    
+
+
                                     <div class="row float-right"><button type="button" class="btn btn-primary button-control" id="saveclas">Save My Class</button></div>
                                 </td>
                         </tbody>
@@ -209,8 +218,6 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
-
-
             <!--my calsses form for mentee-->
             <div class="col-lg-8" id="mycalssesformMentee">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -226,8 +233,6 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
-
-
             <!--messageForm-->
             <div class="col-lg-8" id="messageForm">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -246,8 +251,6 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
-
-
             <!--findClassform-->
             <div class="col-lg-8" id="findClassform">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -271,8 +274,6 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
-
-
             <!--findMentorform-->
             <div class="col-lg-8" id="findMentorform">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -290,8 +291,6 @@
                     </table>
                 </div><!--Table end-->
             </div><!--Form end-->
-
-
             <!--mycalssesformMentor-->
             <div class="col-lg-9" id="mycalssesformMentor">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -318,8 +317,6 @@
                     <button type="button" class="btn btn-primary btn-lg btn-block col-9" data-toggle="modal" data-target="#startNewClass">Start A New Class</button>
                 </div>
             </div><!--Form end-->
-
-
             <!--viewallclassform-->
             <div class="col-lg-8" id="viewallclassform">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
@@ -377,9 +374,6 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-
-
     <!--New Class pupup form-->
     <div id="startNewClass" class="modal fade">
         <div class="modal-dialog modal-dialog-centered">
@@ -428,7 +422,7 @@
                                 <option value="Computer Gaming">Computer Gaming</option>
                             </select>
                         </div>
-                        
+
                         <div class="form-group">
                             <label class="control-label">Class Description</label>
                             <div>
@@ -442,12 +436,42 @@
                                 <button type="submit" class="btn btn-info btn-block">START</button>
                             </div>
                         </div>
-                        
+
                     </form>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <!--Zoom & GoogleDrive form-->
+    <div id="links" class="modal fade ">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="h4 modal-title text-center">Class Resource</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="float-right col-6 linkContainer">
+                            <a href="#" target="_blank" id="zoomlink">
+                                <img class="styleContral img-fluid" id="zoom" src="./img/Zoom.png">
+                            </a>
+                        </div>
+                        <div class="float-left col-6 linkContainer">
+                            <a href="#" id="drivelink" target="_blank">
+                                <img class="styleContral img-fluid" id="googleDrive" src="./img/GoogleDrive.png" href="#">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+
 
     <footer class="fixed-bottom">
         <div class="footer-copyright text-center py-3 text-white-50">&copy; 2020 Copyright: MentorMe</div>

@@ -382,12 +382,17 @@ function updateClass(id) {
     var className = document.getElementById("CName").value
     var ClassDes = document.getElementById("inputDescription").value
     var classID = id
-    var ClassArea = document.getElementById("areaClass1").value
+    var ClassArea = document.getElementById("areaClass").value
+    var zoom = document.getElementById("ZLink").value
+    var drive = document.getElementById("GLink").value
+
     var webMethod = "AccountServices.asmx/updateClass";
     var parameters = "{\"className\":\"" + encodeURI(className) +
         "\", \"ClassDes\":\"" + encodeURI(ClassDes) +
         "\",\"ClassArea\":\"" + encodeURI(ClassArea) +
-        "\", \"classID\":\"" + encodeURI(classID) + "\"}";
+        "\", \"classID\":\"" + encodeURI(classID) +
+        "\",\"zoom\":\"" + encodeURI(zoom) +
+        "\",\"drive\":\"" + encodeURI(drive) +"\"}";
 
     $.ajax({
         type: "POST",
@@ -471,7 +476,9 @@ function LoadCoursesDetial(classNumber) {
 
                 document.getElementById("CName").value = coursesArray[0].courseName;
                 document.getElementById("inputDescription").innerHTML = coursesArray[0].courseDesc;
-                document.getElementById("areaClass").value = coursesArray[0].courseFocus;
+                document.getElementById("areaClass1").value = coursesArray[0].courseFocus;
+                document.getElementById("ZLink").value = coursesArray[0].zoom;
+                document.getElementById("GLink").value = coursesArray[0].drive;
                 document.getElementById("saveclas").setAttribute("onclick", "updateClass(" + coursesArray[0].courseId + ")")
             }
         },
@@ -479,6 +486,45 @@ function LoadCoursesDetial(classNumber) {
             alert("boo...");
         }
     });
+}
+
+function LoadCoursesLinks(classNumber) {
+    var webMethod = "AccountServices.asmx/GetLinks";
+    var parameters = "{\"id\":\"" + encodeURI(classNumber) + "\"}";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            if (msg.d.length > 0) {
+                console.log(msg.d);
+                LinkArray = msg.d;
+                document.getElementById("zoomlink").setAttribute("href", LinkArray[0])
+                document.getElementById("drivelink").setAttribute("href", LinkArray[1])
+            }
+            if (LinkArray[0] === "") {
+                document.getElementById("zoomlink").setAttribute("onclick", "worrning()")
+                document.getElementById("zoomlink").setAttribute("href", "#")
+                document.getElementById("zoomlink").setAttribute("target", "_self")
+
+            }
+            if (LinkArray[1] === "") {
+                document.getElementById("drivelink").setAttribute("onclick", "worrning()")
+                document.getElementById("drivelink").setAttribute("href", "#")
+                document.getElementById("drivelink").setAttribute("target", "_self")
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
+function worrning() {
+    alert("Selected Link Does not Exist. Please Contact Your Mentor.")
 }
 
 function LoadCoursesForMentor(id) {
@@ -504,7 +550,7 @@ function LoadCoursesForMentor(id) {
                     var num = i + 1;
                     course = "<tr><th scope = \"row\">" + num + "</th ><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" + 
                         "<button type=\"button\" class=\"btn btn-warning\">" + "Mentees" + "</button>" + "</td><td>" +
-                        "<button type=\"button\" class=\"btn btn-success \">" + "Zoom/Drive" + "</button>" + "</td><td>"+
+                        "<button type=\"button\" class=\"btn btn-success \" data-toggle=\"modal\" data-target=\"#links\" onclick = \"LoadCoursesLinks(" + coursesArray[i].courseId + ")" + "\">" + "Zoom/Drive" + "</button>" + "</td><td>"+
                         "<button type=\"button\" class=\"btn btn-info \" onclick = \"switchforms('classRoom', this); LoadCoursesDetial(" + coursesArray[i].courseId + ")"+ "\">" + "Edit" + "</button>" + "</td></tr>"
                     $("#mycalssesformMentorDisplay").append(course);
                 }

@@ -10,5 +10,7 @@
         public string courseName;
         public string courseDesc;
         public string courseFocus;
+        public string zoom;
+        public string drive;
     }
 }
