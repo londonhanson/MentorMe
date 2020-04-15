@@ -320,6 +320,7 @@ body {
     transition: 0s background-color;
     transition-duration: 0.15s, 0.15s, 0.15s, 0.15s;
     transition-timing-function: ease-in-out,ease-in-out,ease-in-out,ease-in-out;
+    border-radius:10px;
 }
 
 .linkContainer:hover {
