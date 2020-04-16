@@ -721,6 +721,8 @@ function SendMessage(msg) {
 
         success: function (msg) {
             alert("Message Sent! ");
+            $("#SendMessage").modal("hide");
+            location.reload();
         },
         error: function (e) {
             alert("Failed to Send the Message. Try again.");
