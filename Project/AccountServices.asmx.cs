@@ -573,6 +573,53 @@ namespace accountmanager
             }
         }
 
+        [WebMethod(EnableSession = true)]
+        public Account[] GetMentee(int ClassId)
+        {
+            //GetMentor will dispaly all the mentors. 
+
+            //WE ONLY SHARE mentors WITH LOGGED IN USERS!
+            if (Session["id"] != null)
+            {
+                DataTable sqlDt = new DataTable("mentor");
+
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+                string sqlSelect = "SELECT a.accountId, a.firstName, a.lastName, a.areaOfFocus from accounts a, enrollments e where a.accountId =e.menteeId and e.classId = @id";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@id", HttpUtility.UrlDecode(ClassId.ToString()));
+
+                //gonna use this to fill a data table
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                //filling the data table
+                sqlDa.Fill(sqlDt);
+
+                //loop through each row in the dataset, creating instances
+                //of our container class Courses.  Fill each course with 
+                //data from the rows, then dump them in a list.
+                List<Account> Mentees = new List<Account>();
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+                    //only share user id and pass info with admins!
+                    Mentees.Add(new Account
+                    {
+                        userId = sqlDt.Rows[i]["accountId"].ToString(),
+                        firstName = sqlDt.Rows[i]["firstName"].ToString() + " " + sqlDt.Rows[i]["lastName"].ToString(),
+                        areaOfFocus = sqlDt.Rows[i]["areaOfFocus"].ToString()
+                    });
+                }
+                //convert the list of courses to an array and return!
+                return Mentees.ToArray();
+            }
+            else
+            {
+                //if they're not logged in, return an empty array
+                return new Account[0];
+            }
+        }
+
 
         [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
         public void SendMessage(string targetID, string msg)

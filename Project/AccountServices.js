@@ -549,7 +549,7 @@ function LoadCoursesForMentor(id) {
                     
                     var num = i + 1;
                     course = "<tr><th scope = \"row\">" + num + "</th ><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" + 
-                        "<button type=\"button\" class=\"btn btn-warning\">" + "Mentees" + "</button>" + "</td><td>" +
+                        "<button type=\"button\" class=\"btn btn-warning\" data-toggle=\"modal\" data-target=\"#ShowMentees\" onclick = \"LoadMentee(" + coursesArray[i].courseId + ")\">" + "Mentees" + "</button>" + "</td><td>" +
                         "<button type=\"button\" class=\"btn btn-success \" data-toggle=\"modal\" data-target=\"#links\" onclick = \"LoadCoursesLinks(" + coursesArray[i].courseId + ")" + "\">" + "Zoom/Drive" + "</button>" + "</td><td>"+
                         "<button type=\"button\" class=\"btn btn-info \" onclick = \"switchforms('classRoom', this); LoadCoursesDetial(" + coursesArray[i].courseId + ")"+ "\">" + "Edit" + "</button>" + "</td></tr>"
                     $("#mycalssesformMentorDisplay").append(course);
@@ -630,6 +630,42 @@ function LoadMentor() {
 }
 
 
+function LoadMentee(id) {
+    var webMethod = "AccountServices.asmx/GetMentee";
+    var parameters = "{\"ClassId\":\"" + encodeURI(id) + "\"}";
+    $("#MenteesDisplay").empty();
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        data: parameters,
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            if (msg.d.length > 0) {
+                document.getElementById("menteetboday").style.display = "block"
+                document.getElementById("nomentorMSG").style.display = "none"
+                console.log(msg.d);
+                menteeArray = msg.d;
+
+                for (var i = 0; i < menteeArray.length; i++) {
+                    var mentors;
+                    mentors = "<tr><th scope = \"row\">" + menteeArray[i].userId + "</th ><td>" + menteeArray[i].firstName +
+                        "</td><td>" + "<button type=\"button\"  class=\"btn btn-info \" data-toggle=\"modal\" data-target=\"#SendMessage\" onclick = \"GetReceiver(" + menteeArray[i].userId + ", '" + menteeArray[i].firstName + "')\">" + "Send Message" + "</button>" + "</td></tr>"
+                    $("#MenteesDisplay").append(mentors);
+                }
+            }
+            else {
+                document.getElementById("menteetboday").style.display = "none"
+                document.getElementById("nomentorMSG").style.display = "block"
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
+
 function search() {
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("searchbox");
@@ -652,6 +688,7 @@ function search() {
 
 var receiver;
 function GetReceiver(targetID, name) {
+    document.getElementById("ShowMessagepop").click();
     var head = document.getElementById("MSGhead")
     var lableName = document.getElementById("receiverName")
     head.innerHTML = "Send Message"
@@ -662,6 +699,7 @@ function GetReceiver(targetID, name) {
 
 
 function GetSender(senderID, senderName) {
+    
     var head = document.getElementById("MSGhead")
     var lableName = document.getElementById("receiverName")
     head.innerHTML = "Reply Message"
