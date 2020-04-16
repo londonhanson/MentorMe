@@ -709,7 +709,7 @@ namespace accountmanager
             //tell our command to replace the @parameters with real values
             //we decode them because they came to us via the web so they were encoded
             //for transmission (funky characters escaped, mostly)
-            sqlCommand.Parameters.AddWithValue("@courseId", HttpUtility.UrlDecode(courseId.ToString()));
+            sqlCommand.Parameters.AddWithValue("@classId", HttpUtility.UrlDecode(courseId.ToString()));
             sqlCommand.Parameters.AddWithValue("@menteeId", HttpUtility.UrlDecode(Session["id"].ToString()));
 
             sqlConnection.Open();
@@ -726,7 +726,7 @@ namespace accountmanager
         }
 
         [WebMethod(EnableSession = true)]
-        public Course[] GetCourseForMentee(int classid)
+        public Course[] GetCourseForMentee()
         {
             //GetCourses will display all courses to mentees when trying to join a new course
 
@@ -745,7 +745,7 @@ namespace accountmanager
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
 
                 sqlCommand.Parameters.AddWithValue("@menteeID", HttpUtility.UrlDecode(Session["id"].ToString()));
-                sqlCommand.Parameters.AddWithValue("@classId", HttpUtility.UrlDecode(classid.ToString()));
+                
                 //gonna use this to fill a data table
                 MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
                 //filling the data table
