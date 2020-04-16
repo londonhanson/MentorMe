@@ -761,8 +761,7 @@ function StartNewClass(className, classDescription, classFocus, zoomLink, Google
 function JoinCourse(courseId) {
     var webMethod = "AccountServices.asmx/AddToCourse";
 
-    var parameters = "{\"courseId\":\"" + encodeURI(courseId) +
-        "\",\"id\":\"" + encodeURI(id) + "\"}";
+    var parameters = "{\"courseId\":\"" + encodeURI(courseId) + "\"}";
 
     $.ajax({
         type: "POST",
@@ -780,3 +779,40 @@ function JoinCourse(courseId) {
     });
 }
 
+function LoadCoursesForMentee(id) {
+    console.log("running")
+    var webMethod = "AccountServices.asmx/GetCourseForMentee";
+    var parameters = "{\"classid\":\"" + encodeURI(id) + "\"}";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            coursesArray = msg.d;
+            if (msg.d.length > 0) {
+
+                $("#mycalssesformMentee").empty();
+                var course;
+                for (var i = 0; i < coursesArray.length; i++) {
+                    currentId = parseInt(coursesArray[i].courseId);
+
+                    var num = i + 1;
+                    course = "<tr><th scope = \"row\">" + num + "</th ><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
+                        "<button type=\"button\" class=\"btn btn-success \" data-toggle=\"modal\" data-target=\"#links\" onclick = \"LoadCoursesLinks(" + coursesArray[i].courseId + ")" + "\">" + "Zoom/Drive" + "</button>" + "</td><tr>"
+                    $("#mycalssesformMentee").append(course);
+                }
+            }
+            else {
+                document.getElementById("ClassTableMentee").style.display = "none";
+                course = "<p class=\"text-center font-weight-bold\" style=\"font-size:20px;\">You Don't Have A Class. Please Start A New Class!</p>"
+                $("#menteeCoursePlace").append(course);
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}
