@@ -588,7 +588,7 @@ function LoadMessage() {
                     var message;
                     message = "<tr><th scope = \"row\">" + messageArray[i].senderName + "</th ><td>" + messageArray[i].msg +
                         "</td><td>" + messageArray[i].date + "</td><td>" +
-                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#SendMessage\" onclick = \"GetSender(" + messageArray[i].senderID + ", '" + messageArray[i].senderName + "')\">" + "Reply" + "</button>" + "</td></tr>"
+                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#SendMessage\" onclick = \"GetSender(" + messageArray[i].senderID + ", '" + messageArray[i].senderName + "', '" + messageArray[i].msg + "')\">" + "Reply" + "</button>" + "</td></tr>"
                     $("#messageDisplay").append(message);
                 }
             }
@@ -699,11 +699,13 @@ function GetReceiver(targetID, name) {
 }
 
 
-function GetSender(senderID, senderName) {
+function GetSender(senderID, senderName, senderMessage) {
     
     var head = document.getElementById("MSGhead")
     var lableName = document.getElementById("receiverName")
-    head.innerHTML = "Reply Message"
+    var replyMessage = document.getElementById("displayReplyTo")
+    head.innerHTML = "Reply to Message"
+    replyMessage.innerHTML = "'" + senderMessage + "'"
     lableName.innerHTML = "Reply to " + senderName
     receiver = senderID;
 }
