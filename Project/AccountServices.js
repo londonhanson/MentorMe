@@ -780,9 +780,11 @@ function JoinCourse(courseId) {
 function LoadCoursesForMentee(id) {
     console.log("running")
     var webMethod = "AccountServices.asmx/GetCourseForMentee";
+    var parameters = "{\"classid\":\"" + encodeURI(id) + "\"}";
     $.ajax({
         type: "POST",
         url: webMethod,
+        data: parameters,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (msg) {
@@ -790,7 +792,7 @@ function LoadCoursesForMentee(id) {
             coursesArray = msg.d;
             if (msg.d.length > 0) {
 
-                $("#classesMentee").empty();
+                $("#mycalssesformMentee").empty();
                 var course;
                 for (var i = 0; i < coursesArray.length; i++) {
                     currentId = parseInt(coursesArray[i].courseId);
@@ -798,11 +800,11 @@ function LoadCoursesForMentee(id) {
                     var num = i + 1;
                     course = "<tr><th scope = \"row\">" + num + "</th ><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
                         "<button type=\"button\" class=\"btn btn-success \" data-toggle=\"modal\" data-target=\"#links\" onclick = \"LoadCoursesLinks(" + coursesArray[i].courseId + ")" + "\">" + "Zoom/Drive" + "</button>" + "</td><tr>"
-                    $("#classesMentee").append(course);
+                    $("#mycalssesformMentee").append(course);
                 }
             }
             else {
-                document.getElementById("ClassesTableMentee").style.display = "none";
+                document.getElementById("ClassTableMentee").style.display = "none";
                 course = "<p class=\"text-center font-weight-bold\" style=\"font-size:20px;\">You Don't Have A Class. Please Start A New Class!</p>"
                 $("#menteeCoursePlace").append(course);
             }
