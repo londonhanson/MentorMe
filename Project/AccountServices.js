@@ -350,6 +350,7 @@ function EditAccount(email, password, firstName, lastName, areaOfFocus, accountT
 
 
 // profile update
+
 function update() {
     var email = document.getElementById("inputEmail").value
     var bio = document.getElementById("Bio").value
@@ -447,7 +448,7 @@ function LoadCourses() {
                     course = "<tr><th scope = \"row\">" + coursesArray[i].courseId + "</th ><td>" + coursesArray[i].mentorName +
                     
                         "</td><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
-                    "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#JoinCourse\">" + "Join" + "</button>" + "</td></tr>"
+                        "<button type=\"button\" class=\"btn btn-info\" onclick = \"JoinCourse(" + coursesArray[i].courseId + ")" + "\">" + "Join" + "</button>" + "</td></tr>"
                     $("#classDisplay").append(course);
                     $("#allClassDisplay").append(course);
                 }
@@ -750,7 +751,29 @@ function StartNewClass(className, classDescription, classFocus, zoomLink, Google
             alert("Class Created! View The Class In My Classes Tab!");
         },
         error: function (e) {
-            alert("Failed Create a class. Try again.");
+            alert("Failed to Create a class. Try again.");
+        }
+    });
+}
+
+function JoinCourse(courseId) {
+    var webMethod = "AccountServices.asmx/AddToCourse";
+
+    var parameters = "{\"courseId\":\"" + encodeURI(courseId) +
+        "\",\"id\":\"" + encodeURI(id) + "\"}";
+
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (msg) {
+            alert("Class Added! View The Class In My Classes Tab!");
+        },
+        error: function (e) {
+            alert("Failed to join class. Try again.");
         }
     });
 }
