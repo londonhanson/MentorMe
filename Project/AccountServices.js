@@ -759,8 +759,7 @@ function StartNewClass(className, classDescription, classFocus, zoomLink, Google
 function JoinCourse(courseId) {
     var webMethod = "AccountServices.asmx/AddToCourse";
 
-    var parameters = "{\"courseId\":\"" + encodeURI(courseId) +
-        "\",\"id\":\"" + encodeURI(id) + "\"}";
+    var parameters = "{\"courseId\":\"" + encodeURI(courseId) + "\"}";
 
     $.ajax({
         type: "POST",
