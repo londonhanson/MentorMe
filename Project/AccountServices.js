@@ -753,5 +753,9 @@ function StartNewClass(className, classDescription, classFocus, zoomLink, Google
             alert("Failed Create a class. Try again.");
         }
     });
+
 }
+
+// function that puts the selected file into the img src in the uploadPhoto modal
+// another function that saves the file name to the DB for the user when you click the OK button (need to add the OK button)
 
