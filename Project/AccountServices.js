@@ -163,7 +163,7 @@ function MentorNav() {
     }
     else {
         if (accountData["accountType"] === "Mentee") {
-
+            LoadCoursesForMentee()
             menteeform.style.display = 'block';
             mentorform.style.display = 'none';
             adminform.style.display = 'none';
@@ -350,6 +350,7 @@ function EditAccount(email, password, firstName, lastName, areaOfFocus, accountT
 
 
 // profile update
+
 function update() {
     var email = document.getElementById("inputEmail").value
     var bio = document.getElementById("Bio").value
@@ -447,7 +448,7 @@ function LoadCourses() {
                     course = "<tr><th scope = \"row\">" + coursesArray[i].courseId + "</th ><td>" + coursesArray[i].mentorName +
                     
                         "</td><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
-                    "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#JoinCourse\">" + "Join" + "</button>" + "</td></tr>"
+                        "<button type=\"button\" class=\"btn btn-info\" onclick = \"JoinCourse(" + coursesArray[i].courseId + ")" + "\">" + "Join" + "</button>" + "</td></tr>"
                     $("#classDisplay").append(course);
                     $("#allClassDisplay").append(course);
                 }
@@ -514,7 +515,7 @@ function LoadCoursesLinks(classNumber) {
             if (LinkArray[1] === "") {
                 document.getElementById("drivelink").setAttribute("onclick", "worrning()")
                 document.getElementById("drivelink").setAttribute("href", "#")
-                document.getElementById("drivelink").setAttribute("target", "_self")
+                document.getElementById("drivelink").setAttribute("target", "_blank")
             }
         },
         error: function (e) {
@@ -587,7 +588,7 @@ function LoadMessage() {
                     var message;
                     message = "<tr><th scope = \"row\">" + messageArray[i].senderName + "</th ><td>" + messageArray[i].msg +
                         "</td><td>" + messageArray[i].date + "</td><td>" +
-                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#SendMessage\" onclick = \"GetSender(" + messageArray[i].senderID + ", '" + messageArray[i].senderName + "')\">" + "Reply" + "</button>" + "</td></tr>"
+                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#SendMessage\" onclick = \"GetSender(" + messageArray[i].senderID + ", '" + messageArray[i].senderName + "', '" + messageArray[i].msg + "')\">" + "Reply" + "</button>" + "</td></tr>"
                     $("#messageDisplay").append(message);
                 }
             }
@@ -698,11 +699,13 @@ function GetReceiver(targetID, name) {
 }
 
 
-function GetSender(senderID, senderName) {
+function GetSender(senderID, senderName, senderMessage) {
     
     var head = document.getElementById("MSGhead")
     var lableName = document.getElementById("receiverName")
-    head.innerHTML = "Reply Message"
+    var replyMessage = document.getElementById("displayReplyTo")
+    head.innerHTML = "Reply to Message"
+    replyMessage.innerHTML = "'" + senderMessage + "'"
     lableName.innerHTML = "Reply to " + senderName
     receiver = senderID;
 }
@@ -750,7 +753,7 @@ function StartNewClass(className, classDescription, classFocus, zoomLink, Google
             alert("Class Created! View The Class In My Classes Tab!");
         },
         error: function (e) {
-            alert("Failed Create a class. Try again.");
+            alert("Failed to Create a class. Try again.");
         }
     });
 
@@ -759,3 +762,58 @@ function StartNewClass(className, classDescription, classFocus, zoomLink, Google
 // function that puts the selected file into the img src in the uploadPhoto modal
 // another function that saves the file name to the DB for the user when you click the OK button (need to add the OK button)
 
+function JoinCourse(courseId) {
+    var webMethod = "AccountServices.asmx/AddToCourse";
+
+    var parameters = "{\"courseId\":\"" + encodeURI(courseId) + "\"}";
+
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (msg) {
+            alert("Class Added! View The Class In My Classes Tab!");
+        },
+        error: function (e) {
+            alert("Failed to join class. Try again.");
+        }
+    });
+}
+
+function LoadCoursesForMentee() {
+    console.log("running")
+    var webMethod = "AccountServices.asmx/GetCourseForMentee";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log(msg);
+            coursesArray = msg.d;
+            if (msg.d.length > 0) {
+
+                $("#classesMentee").empty();
+                var course;
+                for (var i = 0; i < coursesArray.length; i++) {
+                    currentId = parseInt(coursesArray[i].courseId);
+                    var num = i + 1;
+                    course = "<tr><th scope = \"row\">" + num + "</th ><td>" + coursesArray[i].courseName + "</td><td>" + coursesArray[i].courseDesc + "</td><td>" + coursesArray[i].courseFocus + "</td><td>" +
+                        "<button type=\"button\" class=\"btn btn-success \" data-toggle=\"modal\" data-target=\"#links\" onclick = \"LoadCoursesLinks(" + coursesArray[i].courseId + ")" + "\">" + "Zoom/Drive" + "</button>" + "</td><tr>"
+                    $("#classesMentee").append(course);
+                }
+            }
+            else {
+                document.getElementById("menteeCoursePlace").style.display = "none";
+                course = "<p class=\"text-center font-weight-bold\" style=\"font-size:20px;\">You Don't Have A Class. Please Join A New Class!</p>"
+                $("#mycalssesformMentee").append(course);
+            }
+        },
+        error: function (e) {
+            alert("boo...");
+        }
+    });
+}

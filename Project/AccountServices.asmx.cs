@@ -694,5 +694,92 @@ namespace accountmanager
             return except;
         }
 
+        [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
+        public void AddToCourse(int courseId)
+        {
+            //our connection string comes from our web.config file like we talked about earlier
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+            //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
+            //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
+            string sqlAddAcct = "INSERT INTO enrollments(classId, menteeId) VALUES(@classId, @menteeId)";
+            //"SELECT userName, password FROM accounts WHERE userName=@idValue and password=@passValue";
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlAddAcct, sqlConnection);
+
+            //tell our command to replace the @parameters with real values
+            //we decode them because they came to us via the web so they were encoded
+            //for transmission (funky characters escaped, mostly)
+            sqlCommand.Parameters.AddWithValue("@classId", HttpUtility.UrlDecode(courseId.ToString()));
+            sqlCommand.Parameters.AddWithValue("@menteeId", HttpUtility.UrlDecode(Session["id"].ToString()));
+
+            sqlConnection.Open();
+
+            try
+            {
+                int accountID = Convert.ToInt32(sqlCommand.ExecuteScalar());
+            }
+            catch (Exception)
+            {
+
+            }
+            sqlConnection.Close();
+        }
+
+        [WebMethod(EnableSession = true)]
+        public Course[] GetCourseForMentee()
+        {
+            //GetCourses will display all courses to mentees when trying to join a new course
+
+            //WE ONLY SHARE CLASSES WITH LOGGED IN USERS!
+            if (Session["id"] != null)
+            {
+
+                DataTable sqlDt = new DataTable("courses");
+
+                string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+                string sqlSelect;
+
+                sqlSelect = "select c.classId, c.mentorID, c.className, c.classDescription, c.classFocus, c.zoomLink, c.GoogleDrive from classes c, enrollments e where c.classId = e.classId and e.menteeId = @menteeId";
+
+                MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@menteeID", HttpUtility.UrlDecode(Session["id"].ToString()));
+                
+                //gonna use this to fill a data table
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                //filling the data table
+                sqlDa.Fill(sqlDt);
+
+                //loop through each row in the dataset, creating instances
+                //of our container class Courses.  Fill each course with
+                //data from the rows, then dump them in a list.
+                List<Course> courses = new List<Course>();
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+                    //only share user id and pass info with admins!
+                    courses.Add(new Course
+                    {
+                        courseId = Convert.ToInt32(sqlDt.Rows[i]["classId"]),
+                        mentorId = Convert.ToInt32(sqlDt.Rows[i]["mentorID"]),
+                        mentorName = sqlDt.Rows[i]["mentorID"].ToString(),
+                        zoom = sqlDt.Rows[i]["zoomLink"].ToString(),
+                        drive = sqlDt.Rows[i]["GoogleDrive"].ToString(),
+                        courseName = sqlDt.Rows[i]["className"].ToString(),
+                        courseDesc = sqlDt.Rows[i]["classDescription"].ToString(),
+                        courseFocus = sqlDt.Rows[i]["classFocus"].ToString()
+                    });
+                }
+                //convert the list of courses to an array and return!
+                return courses.ToArray();
+            }
+            else
+            {
+                //if they're not logged in, return an empty array
+                return new Course[0];
+            }
+        }
+
+
     }
 }

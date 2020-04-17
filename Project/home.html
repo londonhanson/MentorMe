@@ -67,7 +67,7 @@
                 </aside>
                 <nav class="list-group" id="menteeform">
 
-                    <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('mycalssesformMentee',this)"><i class="fa fa-user"></i>My Classes</a>
+                    <a class="list-group-item with-badge activesign active" href="home.html" onclick="switchforms('mycalssesformMentee',this)"><i class="fa fa-user"></i>My Classes</a>
                     <a class="list-group-item activesign" href="#" onclick="switchforms('findClassform', this); LoadCourses()"><i class="fa fa-user"></i>Find A Class</a>
                     <a class="list-group-item activesign" href="#" onclick="switchforms('findMentorform', this); LoadMentor()"><i class="fa fa-user"></i>Find A Mentor</a>
                     <a class="list-group-item activesign" href="#" onclick="switchforms('messageForm', this); LoadMessage()"><i class="fa fa-map"></i>Messages</a>
@@ -80,7 +80,7 @@
                     <a class="list-group-item activesign" href="#" onclick="switchforms('Example',this)"><i class=" fa fa-th"></i>My Profile</a>
                 </nav>
                 <nav class="list-group" id="adminform">
-                    <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('videalluserform',this)"><i class=" fa fa-th"></i>View All Users</a>
+                    <a class="list-group-item with-badge activesign active" href="#" onclick="switchforms('videalluserform', this); LoadCoursesForMentee()"><i class=" fa fa-th"></i>View All Users</a>
                     <a class="list-group-item activesign" href="#" onclick="switchforms('viewallclassform', this); LoadCourses()"><i class="fa fa-user"></i>View All Classes</a>
                 </nav>
             </div>
@@ -222,11 +222,15 @@
             <div class="col-lg-8" id="mycalssesformMentee">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
                 <!--Example Table-->
-                <div class="table">
-                    <table id="acctsTable" class="table table-hover table-striped" style="position:relative;">
+                <div class="table" id="menteeCoursePlace">
+                    <table id="ClassesTableMentee" class="table table-hover table-striped" style="position:relative;">
                         <thead>
                             <tr>
                                 <th>My Classes</th>
+                                <th>Class Name</th>
+                                <th>Class Description</th>
+                                <th>Class Area</th>
+                                <th>Class Room</th>
                             </tr>
                         </thead>
                         <tbody id="classesMentee"></tbody>
@@ -351,8 +355,11 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form id="formMessageegasseMmrofit=" SendMessage($('#messageBox').val()); return false;">
+                    <form id="formMessage" onsubmit="SendMessage($('#messageBox').val()); return false;">
                         <input type="hidden" name="_token" value="">
+                        <div class="form-group">
+                            <label class="control-label" id="displayReplyTo"></label>
+                        </div>
                         <div class="form-group">
                             <label class="control-label" id="receiverName">Message</label>
                             <div>
