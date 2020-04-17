@@ -515,7 +515,7 @@ function LoadCoursesLinks(classNumber) {
             if (LinkArray[1] === "") {
                 document.getElementById("drivelink").setAttribute("onclick", "worrning()")
                 document.getElementById("drivelink").setAttribute("href", "#")
-                document.getElementById("drivelink").setAttribute("target", "_self")
+                document.getElementById("drivelink").setAttribute("target", "_blank")
             }
         },
         error: function (e) {
