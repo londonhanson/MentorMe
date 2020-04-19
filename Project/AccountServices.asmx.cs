@@ -725,6 +725,38 @@ namespace accountmanager
             sqlConnection.Close();
         }
 
+        [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
+        public void DelClass(int courseId)
+        {
+            //our connection string comes from our web.config file like we talked about earlier
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+            //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
+            //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
+            string sqlAddAcct = "DELETE FROM classes WHERE (classId = @classId);DELETE FROM enrollments WHERE(classId = @classId);";
+            //"SELECT userName, password FROM accounts WHERE userName=@idValue and password=@passValue";
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlAddAcct, sqlConnection);
+
+            //tell our command to replace the @parameters with real values
+            //we decode them because they came to us via the web so they were encoded
+            //for transmission (funky characters escaped, mostly)
+            sqlCommand.Parameters.AddWithValue("@classId", HttpUtility.UrlDecode(courseId.ToString()));
+            
+
+            sqlConnection.Open();
+
+            try
+            {
+                int accountID = Convert.ToInt32(sqlCommand.ExecuteScalar());
+            }
+            catch (Exception)
+            {
+
+            }
+            sqlConnection.Close();
+        }
+
+
         [WebMethod(EnableSession = true)]
         public Course[] GetCourseForMentee()
         {

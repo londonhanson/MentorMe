@@ -481,12 +481,34 @@ function LoadCoursesDetial(classNumber) {
                 document.getElementById("ZLink").value = coursesArray[0].zoom;
                 document.getElementById("GLink").value = coursesArray[0].drive;
                 document.getElementById("saveclas").setAttribute("onclick", "updateClass(" + coursesArray[0].courseId + ")")
+                document.getElementById("delClass").setAttribute("onclick", "DeleteClass(" + coursesArray[0].courseId + ")")
             }
         },
         error: function (e) {
             alert("boo...");
         }
     });
+}
+
+function DeleteClass(id) {
+    if (confirm("Do You Want To Delete This Class?")) {
+        var webMethod = "AccountServices.asmx/DelClass";
+        var parameters = "{\"courseId\":\"" + encodeURI(id) + "\"}";
+        $.ajax({
+            type: "POST",
+            url: webMethod,
+            data: parameters,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                alert("Class Deleted");
+                location.reload();
+            },
+            error: function (e) {
+                alert("boo...");
+            }
+        });
+    }
 }
 
 function LoadCoursesLinks(classNumber) {
@@ -751,6 +773,7 @@ function StartNewClass(className, classDescription, classFocus, zoomLink, Google
 
         success: function (msg) {
             alert("Class Created! View The Class In My Classes Tab!");
+            location.reload();
         },
         error: function (e) {
             alert("Failed to Create a class. Try again.");
