@@ -42,7 +42,7 @@ namespace accountmanager
             //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
             //NOTICE: we added admin to what we pull, so that we can store it along with the id in the session
 
-            string sqlSelect = "SELECT accountId, accountType, email, password, firstName, lastName, bio, areaOfFocus, isAdmin FROM accounts WHERE email=@emailValue and password=@passValue";
+            string sqlSelect = "SELECT accountId, accountType, email, password, firstName, lastName, bio, areaOfFocus, isAdmin, photo FROM accounts WHERE email=@emailValue and password=@passValue";
 
 
             //set up our connection object to be ready to use our connection string
@@ -78,6 +78,7 @@ namespace accountmanager
                 Session["bio"] = sqlDt.Rows[0]["bio"];
                 Session["areaOfFocus"] = sqlDt.Rows[0]["areaOfFocus"];
                 Session["isAdmin"] = sqlDt.Rows[0]["isAdmin"];
+                Session["photo"] = sqlDt.Rows[0]["photo"];
 
                 // for later use
                 Session["randomNumber"] = -1;
@@ -88,7 +89,8 @@ namespace accountmanager
                     + "\"lastName\"" + ":" + "\"" + Session["lastName"].ToString() + "\"" + ","
                     + "\"bio\"" + ":" + "\"" + Session["bio"].ToString() + "\"" + ","
                     + "\"isAdmin\"" + ":" + "\"" + Session["isAdmin"] + "\"" + ","
-                    + "\"areaOfFocus\"" + ":" + "\"" + Session["areaOfFocus"].ToString() + "\"" + "}";
+                    + "\"areaOfFocus\"" + ":" + "\"" + Session["areaOfFocus"].ToString() + "\"" + ","
+                    + "\"photo\"" + ":" + "\"" + Session["photo"].ToString() + "\"" + "}";
 
             }
             //return the result!
@@ -857,5 +859,24 @@ namespace accountmanager
         }
 
 
+        [WebMethod(EnableSession = true)]
+        public void SaveNewPhoto(string filename)
+        {
+            string sqlConString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+            string sqlUpdatePhoto = "UPDATE accounts SET photo=@filename WHERE accountId=@userIdValue";
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlUpdatePhoto, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@userIdValue", HttpUtility.UrlDecode(Session["id"].ToString()));
+            sqlCommand.Parameters.AddWithValue("@filename", HttpUtility.UrlDecode(filename));
+            sqlConnection.Open();
+            try
+            {
+                int accountID = Convert.ToInt32(sqlCommand.ExecuteScalar());
+            }
+            catch (Exception)
+            {
+            }
+            sqlConnection.Close();
+        }
     }
 }

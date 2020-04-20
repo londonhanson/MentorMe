@@ -56,8 +56,8 @@
                     <div class="user-cover" style="background-image: url(./img/bg.jpg);"></div>
                     <div class="user-info">
                         <div class="user-avatar">
-                            <a class="edit-avatar" href="#">&#128472</a>
-                            <img src="./img/Example.png" alt="User">
+                            <a class="edit-avatar" href="#" data-toggle="modal" data-target="#uploadPhotoModal">&#128472</a>
+                            <img src="./img/Example.png" alt="User" id="userPhoto">
                         </div>
                         <div class="user-data">
                             <h4 id="fullName">User's Name</h4>
@@ -499,7 +499,7 @@
                             <tbody id="MenteesDisplay"></tbody>
                         </table>
                     </div><!--Table end-->
-                    <p class="text-center font-weight-bold" style="font-size:19px;" id="nomentorMSG">You Don't Have Any Mentee. They Are On The Way!</p>
+                    <p class="text-center font-weight-bold" style="font-size:19px;" id="nomentorMSG">You Don't Have Any Mentees. They Are On The Way!</p>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -585,11 +585,20 @@
                             </div>
                         </form>
                     </div>
+    <div id="uploadPhotoModal" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="h4 modal-title text-center">Upload New Photo</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <!-- Embed aspx file in iFrame here for image upload -->
+                    <iframe id="photoUploadFrame" src="./uploadbutton.aspx"></iframe>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
 
     <footer class="fixed-bottom">
         <div class="footer-copyright text-center py-3 text-white-50">&copy; 2020 Copyright: MentorMe</div>
