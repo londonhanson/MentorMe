@@ -198,6 +198,7 @@ function MentorNav() {
 }
 
 
+
 function switchforms(formname, element) {
     console.log(formname)
     var formList = ["classRoom", "viewallclassform", "mycalssesformMentor", "findMentorform", "findClassform", "messageForm", "mycalssesformMentee", "Example", "videalluserform"]
@@ -252,6 +253,14 @@ function DisplayData() {
     emailAddress.value = accountData['email']
     var areaProfile = document.getElementById("areaProfile")
     areaProfile.value = accountData['areaOfFocus']
+
+    if (accountData["photo"] === "") {
+        $("#userPhoto").attr("src", "img/Example.png");
+    }
+    else {
+        var photoName = accountData["photo"];
+        $("#userPhoto").attr("src", "img/" + photoName);
+    }
 }
 
 function LoadAccounts() {
@@ -758,9 +767,6 @@ function StartNewClass(className, classDescription, classFocus, zoomLink, Google
     });
 
 }
-
-// function that puts the selected file into the img src in the uploadPhoto modal
-// another function that saves the file name to the DB for the user when you click the OK button (need to add the OK button)
 
 function JoinCourse(courseId) {
     var webMethod = "AccountServices.asmx/AddToCourse";

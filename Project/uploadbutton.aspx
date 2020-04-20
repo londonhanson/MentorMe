@@ -7,17 +7,13 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
-		<fieldset>
-			<legend>
-				...or hey upload a file!
-			</legend>
-    	<asp:FileUpload ID="Uploader" runat="server" />
-    	<asp:Button ID="UploadSubmit" runat="server" OnClick="UploadSubmit_Click" Text="Upload" Height="40px" BackColor="White" BorderStyle="None" ForeColor="Blue" />
-		</fieldset>
-    <asp:Label ID="StatusLabel" runat="server" Font-Italic="True"></asp:Label>
-		<br />
-    </form>
-	
+    <form id="form1" runat="server">		
+    	<asp:FileUpload ID="Uploader" runat="server" accept="image/*"/>
+        <br />
+        <br />
+    	<asp:Button ID="UploadSubmit" runat="server" OnClick="UploadSubmit_Click" Text="Upload" />  
+        <br />
+        <asp:Label ID="StatusLabel" runat="server" Font-Italic="true" Text=""></asp:Label>
+    </form>	
 </body>
 </html>
