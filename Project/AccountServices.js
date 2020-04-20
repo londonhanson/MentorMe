@@ -5,32 +5,18 @@ var accountData = JSON.parse(localStorage.getItem("account"))
 function LogIn(email, pass) {
     document.getElementById("signbtn").style.display = "none";
     document.getElementById("spsignbtn").style.display = "block";
-    //the url of the webservice we will be talking to
+
     var webMethod = "AccountServices.asmx/LogIn";
 
     var parameters = "{\"email\":\"" + encodeURI(email) + "\",\"pass\":\"" + encodeURI(pass) + "\"}";
 
-    //jQuery ajax method
-
     $.ajax({
-        //post is more secure than get, and allows
-        //us to send big data if we want.  really just
-        //depends on the way the service you're talking to is set up, though
-
         type: "POST",
-        //the url is set to the string we created above
-
         url: webMethod,
-        //same with the data
         data: parameters,
-        //these next two key/value pairs say we intend to talk in JSON format
-
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        //jQuery sends the data and asynchronously waits for a response.  when it
-        //gets a rmesponse, it calls the function apped to the success key here
         success: function (msg) {
-            //the server response is in the msg object passed in to the function here
 
             if (msg.d === "") {
                 account = { "email": "none" };
@@ -49,7 +35,18 @@ function LogIn(email, pass) {
             else {
                 document.getElementById("signbtn").style.display = "block";
                 document.getElementById("spsignbtn").style.display = "none";
-                alert("Username and/or Password is Incorrect");
+
+                $('#ModalExample').modal('toggle');
+                $('#alertModal').modal('toggle');
+                document.getElementById('alertBody').innerHTML = "Username and/or Password is Incorrect";
+                $("#btnConfirm").click(function () {
+                    $('#ModalExample').modal('toggle');
+                    $('#alertModal').modal('toggle');
+                });
+                $("#btnCloseModal").click(function () {
+                    $('#ModalExample').modal('toggle');
+                    $('#alertModal').modal('toggle');
+                });
                 return false;
             }
         },
@@ -57,7 +54,7 @@ function LogIn(email, pass) {
             document.getElementById("signbtn").style.display = "block";
             document.getElementById("spsignbtn").style.display = "none";
 
-            alert(msg.d);
+            ErrorAlert();
         }
     });
     return true;
@@ -81,20 +78,41 @@ function SignUp(email, password, firstName, lastName, accountType) {
 
         success: function (msg) {
             if (msg.d === "Duplicate") {
-                alert("An account with this email already exists. Please Try again.")
+                $('#Signupform').modal('hide');
+                $('#alertModal').modal('show');
+                $("#btnConfirm").click(function () {
+                    $('#alertModal').modal('hide');
+                    $('#Signupform').modal('show');
+                });
+                document.getElementById('alertBody').innerHTML = "An account with this email already exists. Please try again.";
             }
             else {
-            alert("Account created, you can now login.");
-                location.href = "index.html"
+                $('#Signupform').modal('hide');
+                $('#alertModal').modal('toggle');
+                document.getElementById('alertBody').innerHTML = "Account created, you can now login.";
+                $("#btnConfirm").click(function () {
+                    $('#Signupform').modal('hide');
+                    $('#ModalExample').modal('show');
+                });
+                $("#btnCloseModal").click(function () {
+                    location.replace("./index.html");
+                });
             }
          },
-    error: function (e) {
-    alert("Failed to create an account. Try again.");
+        error: function (e) {
+            $('#Signupform').modal('hide');
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Failed to create an account. Try again.";
+            $("#btnConfirm").click(function () {
+                location.reload();
+            });
+
+            $("#btnCloseModal").click(function () {
+                location.reload();
+            });
         }
     });
 }
-
-//logs the user off both at the client and at the server
 
 function LogOut() {
     var webMethod = "AccountServices.asmx/LogOut";
@@ -105,17 +123,21 @@ function LogOut() {
         dataType: "json",
         success: function (msg) {
             if (msg.d) {
-                //we logged off, so go back to logon page,
-                //stop checking messages
-                //and clear the chat panel
-                alert("You have been signed out.");
-                location.replace("./index.html");
+                
+                $('#alertModal').modal('toggle');
+                document.getElementById('alertBody').innerHTML = "You have successfully logged out.";
+                $("#btnConfirm").click(function () {
+                    location.replace("./index.html");
+                });
+                $("#btnCloseModal").click(function () {
+                    location.replace("./index.html");
+                });
             }
             else {
             }
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
     });
 }
@@ -227,10 +249,8 @@ function switchforms(formname, element) {
     }
 }
 
-
 var accountsArray;
 var currentId;
-var accountData = JSON.parse(localStorage.getItem("account"))
 function DisplayData() {
     
     console.log(accountData["email"]);
@@ -254,6 +274,7 @@ function DisplayData() {
     areaProfile.value = accountData['areaOfFocus']
 }
 
+var editedAccount = new Array();
 function LoadAccounts() {
     var webMethod = "AccountServices.asmx/GetAccounts";
     $.ajax({
@@ -262,9 +283,7 @@ function LoadAccounts() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (msg) {
-            console.log(msg);
             if (msg.d.length > 0) {
-                console.log(msg.d);
                 accountsArray = msg.d;
                 $("#accountsBox").empty();
                 // sort the id
@@ -285,18 +304,24 @@ function LoadAccounts() {
                     currentId = parseInt(accountsArray[i].accountID);
                     var acct;
                     acct = "<tr><th scope = \"row\">" + accountsArray[i].id + "</th ><td>" + accountsArray[i].email +
-                        "</td><td>" + accountsArray[i].firstName + "</td><td>" + accountsArray[i].lastName + "</td><td>" +
-                        accountsArray[i].areaOfFocus + "</td><td>" + "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#EditUser\">" + "Edit" + "</button>" + "</td><td>" +
+                        "</td><td>" + accountsArray[i].firstName + "</td><td>" + accountsArray[i].lastName + "</td><td>" + 
+                        accountsArray[i].areaOfFocus + "</td><td>" + accountsArray[i].accountType + "</td><td>" +
+                        "<button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#EditUser\" onclick='SetEstablishedDetails(" + JSON.stringify(accountsArray[i]) + ")'>" + "Edit" + "</button>" + "</td><td>" +
                         "<button type=\"button\" class=\"btn btn-warning\" onclick='DeleteAccount(" + accountsArray[i].id + ")'>" + "Delete" + "</button>" + "</td></tr>"
 
                     $("#accountsBox").append(acct);
+
                 }
             }
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
     });
+}
+
+function SetEstablishedDetails(account) {
+    editedAccount = account;
 }
 
 function DeleteAccount(id) {
@@ -309,11 +334,18 @@ function DeleteAccount(id) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (msg) {
-            alert("Account Deleted");
-            location.reload();
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Account deleted.";
+            $("#btnConfirm").click(function () {
+                location.reload();
+            });
+
+            $("#btnCloseModal").click(function () {
+                location.reload();
+            });
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
     });
 }
@@ -321,8 +353,30 @@ function DeleteAccount(id) {
 // This function can be used later, I think to make it work, we just need to change the parameters and add more function in there.
 
 function EditAccount(email, password, firstName, lastName, areaOfFocus, accountType) {
+    event.preventDefault();
+    console.log(editedAccount);
+
+    if (email === "" || email === null) {
+        email = editedAccount.email;
+    }
+    if (password === "" || password === null) {
+        password = editedAccount.password;
+    }
+    if (firstName === "" || firstName === null) {
+        firstName = editedAccount.firstName;
+    }
+    if (lastName === "" || lastName === null) {
+        lastName = editedAccount.lastName;
+    }
+    if (areaOfFocus === "" || areaOfFocus === null) {
+        areaOfFocus = editedAccount.areaOfFocus;
+    }
+    if (accountType === "" || accountType === null) {
+        accountType = editedAccount.accountType;
+    }
+
     var webMethod = "AccountServices.asmx/UpdateAccount";
-    var parameters = "{\"accountId\":\"" + encodeURI(currentId) +
+    var parameters = "{\"accountId\":\"" + encodeURI(editedAccount.id) +
         "\",\"email\":\"" + encodeURI(email) +
         "\",\"password\":\"" + encodeURI(password) +
         "\",\"firstName\":\"" + encodeURI(firstName) +
@@ -337,17 +391,55 @@ function EditAccount(email, password, firstName, lastName, areaOfFocus, accountT
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (msg) {
-            alert("Account Updated.");
-            location.reload();
+            $('#EditUser').modal('toggle');
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Account Updated.";
+            $("#btnConfirm").click(function () {
+                location.reload();
+            });
+
+            $("#btnCloseModal").click(function () {
+                location.reload();
+            });
+            LoadAccounts();
+            //document.getElementById("bioField").innerHTML = accountData["bio"];
         },
         error: function (e) {
-            alert(e.msg);
+            ErrorAlert();
         }
     });
 
 }
 
 
+function RetrieveUpdatedAccount() {
+    currentId = parseInt(accountData["id"]);
+    var webMethod = "AccountServices.asmx/RetrieveUpdatedAccount";
+    var parameters = "{\"accountId\":\"" + encodeURI(currentId) + "\"}";
+
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Profile saved.";
+            $("#btnConfirm").click(function () {
+                location.reload();
+            });
+
+            $("#btnCloseModal").click(function () {
+                location.reload();
+            });
+        },
+        error: function (e) {
+            ErrorAlert();
+        }
+    });
+
+}
 
 // profile update
 
@@ -369,12 +461,10 @@ function update() {
         dataType: "json",
 
         success: function (msg) {
-            alert("Profile Saved!");
-
-            location.href = "home.html"
+            RetrieveUpdatedAccount();
         },
         error: function (e) {
-            alert("Failed to save your profile. Try again.");
+            ErrorAlert();
         }
     });
 }
@@ -403,12 +493,18 @@ function updateClass(id) {
         dataType: "json",
 
         success: function (msg) {
-            alert("Class Saved!");
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Class Saved!";
+            $("#btnConfirm").click(function () {
+                location.reload();
+            });
 
-            location.href = "home.html"
+            $("#btnCloseModal").click(function () {
+                location.reload();
+            });
         },
         error: function (e) {
-            alert("Failed to save your Class. Try again.");
+            ErrorAlert();
         }
     });
 }
@@ -455,7 +551,7 @@ function LoadCourses() {
             }
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
     });
 }
@@ -485,7 +581,7 @@ function LoadCoursesDetial(classNumber) {
             }
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
     });
 }
@@ -501,11 +597,18 @@ function DeleteClass(id) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (msg) {
-                alert("Class Deleted");
-                location.reload();
+                $('#alertModal').modal('toggle');
+                document.getElementById('alertBody').innerHTML = "Class deleted.";
+                $("#btnConfirm").click(function () {
+                    location.reload();
+                });
+
+                $("#btnCloseModal").click(function () {
+                    location.reload();
+                });
             },
             error: function (e) {
-                alert("boo...");
+                ErrorAlert();
             }
         });
     }
@@ -541,7 +644,7 @@ function LoadCoursesLinks(classNumber) {
             }
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
     });
 }
@@ -585,7 +688,7 @@ function LoadCoursesForMentor(id) {
             }
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
     });
 }
@@ -616,7 +719,7 @@ function LoadMessage() {
             }
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
     });
 }
@@ -647,7 +750,7 @@ function LoadMentor() {
             }
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
     });
 }
@@ -684,7 +787,7 @@ function LoadMentee(id) {
             }
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
     });
 }
@@ -745,12 +848,20 @@ function SendMessage(msg) {
         dataType: "json",
 
         success: function (msg) {
-            alert("Message Sent! ");
             $("#SendMessage").modal("hide");
-            location.reload();
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Message Sent!";
+            $("#btnConfirm").click(function () {
+                location.reload();
+            });
+            $("#btnCloseModal").click(function () {
+                location.reload();
+            });
+
         },
         error: function (e) {
-            alert("Failed to Send the Message. Try again.");
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Failed to Send the Message. Try again.";
         }
     });
 }
@@ -772,11 +883,19 @@ function StartNewClass(className, classDescription, classFocus, zoomLink, Google
         dataType: "json",
 
         success: function (msg) {
-            alert("Class Created! View The Class In My Classes Tab!");
-            location.reload();
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Class Created! View The Class In My Classes Tab!";
+            $("#btnConfirm").click(function () {
+                location.reload();
+            });
+            $("#btnCloseModal").click(function () {
+                location.reload();
+            });
         },
         error: function (e) {
-            alert("Failed to Create a class. Try again.");
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Failed to Create a class. Try again.";
+
         }
     });
 }
@@ -794,10 +913,12 @@ function JoinCourse(courseId) {
         dataType: "json",
 
         success: function (msg) {
-            alert("Class Added! View The Class In My Classes Tab!");
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Class Added! View The Class In My Classes Tab!";
         },
         error: function (e) {
-            alert("Failed to join class. Try again.");
+            $('#alertModal').modal('toggle');
+            document.getElementById('alertBody').innerHTML = "Failed to join class. Try again.";
         }
     });
 }
@@ -832,7 +953,18 @@ function LoadCoursesForMentee() {
             }
         },
         error: function (e) {
-            alert("boo...");
+            ErrorAlert();
         }
+    });
+}
+
+function ErrorAlert() {
+    $('#alertModal').modal('toggle');
+    document.getElementById('alertBody').innerHTML = "Something went wrong.";
+    $("#btnConfirm").click(function () {
+        location.replace("./index.html");
+    });
+    $("#btnCloseModal").click(function () {
+        location.replace("./index.html");
     });
 }

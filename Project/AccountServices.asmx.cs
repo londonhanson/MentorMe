@@ -224,6 +224,7 @@ namespace accountmanager
             //WRAPPING THE WHOLE THING IN AN IF STATEMENT TO CHECK IF THEY ARE AN ADMIN!
             if (Session["isAdmin"].ToString() == "True")
             {
+
                 string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
                 //this is a simple update, with parameters to pass in values
                 string sqlSelect = "update accounts set email=@emailValue, password=@passValue, firstName=@fnameValue, lastName=@lnameValue, " +
@@ -810,6 +811,49 @@ namespace accountmanager
                 //if they're not logged in, return an empty array
                 return new Course[0];
             }
+        }
+
+        [WebMethod(EnableSession = true)] //NOTICE: gotta enable session on each individual method
+        public string RetrieveUpdatedAccount(string accountId)
+        {
+
+            string account = "";
+
+            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
+
+            string sqlSelect = "SELECT accountId, accountType, email, password, firstName, lastName, bio, areaOfFocus, isAdmin FROM accounts WHERE accountId=@accountIdValue";
+
+            MySqlConnection sqlConnection = new MySqlConnection(sqlConnectString);
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@accountIdValue", HttpUtility.UrlDecode(accountId));
+
+            MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+            DataTable sqlDt = new DataTable();
+            sqlDa.Fill(sqlDt);
+
+            if (sqlDt.Rows.Count > 0)
+            {
+                Session["id"] = sqlDt.Rows[0]["accountId"];
+                Session["accountType"] = sqlDt.Rows[0]["accountType"];
+                Session["email"] = sqlDt.Rows[0]["email"];
+                Session["firstName"] = sqlDt.Rows[0]["firstName"];
+                Session["lastName"] = sqlDt.Rows[0]["lastName"];
+                Session["bio"] = sqlDt.Rows[0]["bio"];
+                Session["areaOfFocus"] = sqlDt.Rows[0]["areaOfFocus"];
+                Session["isAdmin"] = sqlDt.Rows[0]["isAdmin"];
+
+                Session["randomNumber"] = -1;
+                account = "{" + "\"id\"" + ":" + "\"" + Session["id"] + "\"" + ","
+                    + "\"accountType\"" + ":" + "\"" + Session["accountType"].ToString() + "\"" + ","
+                    + "\"email\"" + ":" + "\"" + Session["email"].ToString() + "\"" + ","
+                    + "\"firstName\"" + ":" + "\"" + Session["firstName"].ToString() + "\"" + ","
+                    + "\"lastName\"" + ":" + "\"" + Session["lastName"].ToString() + "\"" + ","
+                    + "\"bio\"" + ":" + "\"" + Session["bio"].ToString() + "\"" + ","
+                    + "\"isAdmin\"" + ":" + "\"" + Session["isAdmin"] + "\"" + ","
+                    + "\"areaOfFocus\"" + ":" + "\"" + Session["areaOfFocus"].ToString() + "\"" + "}";
+            }
+            return account;
         }
 
 

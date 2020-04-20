@@ -42,7 +42,7 @@
                     <span id="DisplayEmail"></span>
                 </li>
                 <li id="button-link" class="nav-item">
-                    <button href="#" id="signup" class="nav-link btn btn-lg navright" onclick="LogOut()" data-toggle="modal" data-target="">Log Out</button>
+                    <button href="#" id="btnLogOut" class="nav-link btn btn-lg navright" onclick="LogOut()" data-toggle="modal" data-target="">Log Out</button>
                 </li>
             </ul>
         </div>
@@ -212,6 +212,7 @@
                                 <th scope="col">First Name</th>
                                 <th scope="col">Last Name</th>
                                 <th scope="col">Area of Focus</th>
+                                <th scope="col">Account Type</th>
                                 <th scope="col" style="width:120px">Edit User</th>
                                 <th scope="col" style="width:120px">Delete User</th>
                             </tr>
@@ -477,8 +478,6 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-
     <!--Show Mentees form-->
     <div id="ShowMentees" class="modal fade ">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -505,8 +504,91 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <!-- Bootstrap modal for javascript alerts -->
+    <div class="modal" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="lgoutModalCenteredLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalCenteredLabel">Notice</h5>
+                    <button id="btnCloseModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!--Place inner HTML here-->
+                    <p id="alertBody"></p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnConfirm" type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
+    <!--This is a box that pops up to edit a user account. **ADMIN ONLY-->
+    <div id="EditUser" class="modal fade ">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="h4 modal-title text-center">Edit User Details</h2>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div id="editattributes">
+                    <div class="modal-body">
+                        <form role="form" onsubmit="EditAccount($('#email').val(), $('#password').val(), $('#fName').val(), $('#lName').val(), $('#areaOfFocus').val(), $('#selectType').val()); return false;">
+                            <input type="hidden" name="_token" value="">
+                            <div class="form-group">
+                                <label class="control-label">First Name</label>
+                                <div>
+                                    <input id="fName" type="text" class="form-control input-lg" name="first" value="" autofocus="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Last Name</label>
+                                <div>
+                                    <input id="lName" type="text" class="form-control input-lg" name="last" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">E-Mail Address</label>
+                                <div>
+                                    <input id="email" type="email" class="form-control input-lg" name="email" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Password</label>
+                                <div>
+                                    <input type="password" id="password" class="form-control input-lg" name="password" minlength="8">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Area of Focus</label>
+                                <div>
+                                    <input type="text" id="areaOfFocus" class="form-control input-lg" name="areaOfFocus">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Position</label>
+                                <select class="custom-select form-control" id="selectType" required>
+                                    <option selected>Change User Status</option>
+                                    <option value="Mentee">Mentee</option>
+                                    <option value="Mentor">Mentor</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <div>
+                                    <button type="submit" class="btn btn-info btn-block">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 
     <footer class="fixed-bottom">
